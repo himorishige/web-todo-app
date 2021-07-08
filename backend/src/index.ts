@@ -16,8 +16,13 @@ const setupSwagger = (app: INestApplication) => {
     .setDescription('The API documentation for the ToDo app')
     .setVersion('1.0')
     .build();
+  const additionalOptions = {
+    swaggerOptions: {
+      supportedSubmitMethods: [],
+    },
+  };
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, additionalOptions);
 };
 
 const bootstrapServer = async (): Promise<Server> => {

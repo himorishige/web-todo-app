@@ -10,8 +10,13 @@ async function bootstrap() {
     .setDescription('The API documentation for the ToDo app')
     .setVersion('1.0')
     .build();
+  const additionalOptions = {
+    swaggerOptions: {
+      supportedSubmitMethods: [],
+    },
+  };
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, additionalOptions);
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
