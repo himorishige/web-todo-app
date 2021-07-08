@@ -1,0 +1,14 @@
+tasksTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: tasksTable-${self:provider.stage}
+    AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+    KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+    TimeToLiveSpecification:
+      AttributeName: Expiration
+      Enabled: true
+    BillingMode: PAY_PER_REQUEST

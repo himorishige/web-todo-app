@@ -16,19 +16,19 @@ provider:
   apiGateway:
     shouldStartNameWithService: true
   environment:
-    TASKS_TABLE_NAME: ${self:custom.TasksTable.name}
+    TASKS_TABLE_NAME: ${self:custom.tasksTable.name}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
   iam:
     role:
       statements:
-        - ${file(iam/TasksTableIAM.yml):TasksTableIAM}
+        - ${file(iam/tasksTableIAM.yml):tasksTableIAM}
 
 package:
   individually: true
 
 resources:
   Resources:
-    TasksTable: ${file(resources/TasksTable.yml):TasksTable}
+    tasksTable: ${file(resources/tasksTable.yml):tasksTable}
 
 functions:
   main:
@@ -51,9 +51,11 @@ custom:
       migrate: true
   endpoints:
     dynamodbURL: 'http://localhost:8000'
-  TasksTable:
-    name: !Ref TasksTable
-    arn: !GetAtt TasksTable.Arn
+  tasksTable:
+    name: !Ref tasksTable
+    arn: !GetAtt tasksTable.Arn
+  optimize:
+    external: ['swagger-ui-dist']
 
 variablesResolutionMode: 20210326
 configValidationMode: warn
