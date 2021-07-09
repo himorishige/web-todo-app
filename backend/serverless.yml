@@ -1,0 +1,61 @@
+service: serverless-todo-nestjs
+
+useDotenv: true
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-plugin-optimize
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-northeast-1'}
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+  environment:
+    TASKS_TABLE_NAME: ${self:custom.tasksTable.name}
+    DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
+  iam:
+    role:
+      statements:
+        - ${file(iam/tasksTableIAM.yml):tasksTableIAM}
+
+package:
+  individually: true
+
+resources:
+  Resources:
+    tasksTable: ${file(resources/tasksTable.yml):tasksTable}
+
+functions:
+  main:
+    handler: dist/index.handler
+    events:
+      - http:
+          cors: true
+          path: '/'
+          method: any
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: any
+
+custom:
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      migrate: true
+  endpoints:
+    dynamodbURL: 'http://localhost:8000'
+  tasksTable:
+    name: !Ref tasksTable
+    arn: !GetAtt tasksTable.Arn
+  optimize:
+    external: ['swagger-ui-dist']
+
+variablesResolutionMode: 20210326
+configValidationMode: warn
