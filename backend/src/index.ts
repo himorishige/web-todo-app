@@ -30,6 +30,7 @@ const bootstrapServer = async (): Promise<Server> => {
   const adapter = new ExpressAdapter(expressApp);
   const app = await NestFactory.create(AppModule, adapter);
   app.enableCors();
+  app.enableVersioning();
   app.useGlobalPipes(new ValidationPipe());
   setupSwagger(app);
   app.init();

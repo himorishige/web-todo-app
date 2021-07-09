@@ -11,7 +11,10 @@ import { CreateTaskDto } from './dto/createTask.dto';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
-@Controller('tasks')
+@Controller({
+  path: 'tasks',
+  version: '1',
+})
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
