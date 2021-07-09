@@ -22,10 +22,12 @@
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.0.0",
     "aws-lambda": "^1.0.6",
+    "aws-sdk": "^2.942.0",
     "aws-serverless-express": "^3.4.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",

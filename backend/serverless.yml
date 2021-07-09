@@ -52,7 +52,7 @@ custom:
   endpoints:
     dynamodbURL: 'http://localhost:8000'
   tasksTable:
-    name: !Ref tasksTable
+    name: ${file(resources/tasksTable.yml):tasksTable.Properties.TableName}
     arn: !GetAtt tasksTable.Arn
   optimize:
     external: ['swagger-ui-dist']
