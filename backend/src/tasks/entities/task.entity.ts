@@ -1,8 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { v4 as uuid } from 'uuid';
 
 export class Task {
-  @ApiProperty({ example: uuid(), description: 'ID', type: String })
+  @ApiProperty({
+    example: '4de93414-2332-4834-b94d-c99bbe7de92b',
+    description: 'ID',
+    type: String,
+  })
   id: string;
 
   @ApiProperty({
@@ -16,9 +19,9 @@ export class Task {
   isCompleted: boolean;
 
   @ApiProperty({
-    example: new Date('2021-1-1').toLocaleDateString(),
+    example: new Date('2021-1-1'),
     description: '作成日',
-    type: String,
+    type: Date,
   })
-  createdAt: string;
+  createdAt: Date;
 }
