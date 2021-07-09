@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
@@ -11,15 +11,15 @@ export class CreateTaskDto {
   })
   title: string;
 
+  @IsNumber()
+  @ApiProperty({
+    example: 1,
+    description: '優先度',
+    type: Number,
+  })
+  priority: number;
+
   @IsBoolean()
   @ApiProperty({ example: false, description: '完了フラグ', type: Boolean })
   isCompleted: boolean;
-
-  @IsDate()
-  @ApiProperty({
-    example: new Date('2021-1-1'),
-    description: '作成日',
-    type: Date,
-  })
-  createdAt: Date;
 }

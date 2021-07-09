@@ -1,53 +1,145 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTaskDto } from './dto/createTask.dto';
-import { Task } from './entities/task.entity';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import * as AWS from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from './entities/task.entity';
+
+let dynamoDB: AWS.DynamoDB.DocumentClient;
+if (process.env.IS_OFFLINE === 'true') {
+  dynamoDB = new AWS.DynamoDB.DocumentClient({
+    region: 'localhost',
+    endpoint: process.env.DYNAMODB_ENDPOINT,
+  });
+} else {
+  dynamoDB = new AWS.DynamoDB.DocumentClient();
+}
 
 @Injectable()
 export class TasksService {
-  private readonly tasks: Task[] = [
-    {
-      id: '1',
-      title: '牛乳を買ってくる',
-      isCompleted: false,
-      createdAt: new Date('2021-1-1'),
-    },
-  ];
-
-  async create(inputTask: CreateTaskDto): Promise<Task> {
+  async create(createTaskDto: CreateTaskDto) {
     const task: Task = {
       id: uuid(),
-      title: inputTask.title,
-      isCompleted: inputTask.isCompleted,
-      createdAt: new Date(Date.now()),
+      ...createTaskDto,
+      priority: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
-    this.tasks.push(task);
+
+    try {
+      await dynamoDB
+        .put({
+          TableName: process.env.TASKS_TABLE_NAME,
+          Item: task,
+        })
+        .promise();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
     return task;
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.tasks;
+  async findAll() {
+    let tasks: Task[];
+    try {
+      const result = await dynamoDB
+        .scan({
+          TableName: process.env.TASKS_TABLE_NAME,
+        })
+        .promise();
+      tasks = result.Items as Task[];
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+
+    if (!tasks) {
+      throw new NotFoundException(`No tasks found.`);
+    }
+
+    return tasks;
   }
 
   async findOne(id: string) {
-    return this.tasks.find((task) => task.id === id);
-  }
-
-  async update(inputTask: Task): Promise<Task> {
-    const target = await this.findOne(inputTask.id);
-    if (target === null) {
-      throw new NotFoundException(`Task not found. id: ${inputTask.id}`);
+    let task: Task;
+    try {
+      const result = await dynamoDB
+        .get({
+          TableName: process.env.TASKS_TABLE_NAME,
+          Key: { id },
+        })
+        .promise();
+      task = result.Item as Task;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
 
-    const index = this.tasks.findIndex((task) => task.id === target.id);
-    this.tasks.splice(index, 1);
-    const task: Task = { ...inputTask };
-    this.tasks.push(task);
+    if (!task) {
+      throw new NotFoundException(`The task with ID "${id} not found.`);
+    }
+
     return task;
   }
 
-  async delete(id: string) {
-    this.tasks.filter((task) => task.id !== id);
-    return id;
+  async update(id: string, updateTaskDto: UpdateTaskDto) {
+    let updateExpression = 'set ';
+    const expressionAttributeValues = {} as any;
+    const expressionAttributeNames = {} as any;
+    for (const [key, value] of Object.entries(updateTaskDto)) {
+      if (!(key === 'id')) {
+        updateExpression += `#${key} = :${key}, `;
+        expressionAttributeValues[`:${key}`] = value;
+        expressionAttributeNames[`#${key}`] = `${key}`;
+      }
+    }
+    updateExpression += `#updatedAt = :updatedAt, `;
+    expressionAttributeValues[`:updatedAt`] = new Date(
+      Date.now(),
+    ).toISOString();
+    expressionAttributeNames[`#updatedAt`] = 'updatedAt';
+    updateExpression = updateExpression.slice(0, -2);
+
+    let task: Task;
+    try {
+      const result = await dynamoDB
+        .update({
+          TableName: process.env.TASKS_TABLE_NAME,
+          Key: { id },
+          UpdateExpression: updateExpression,
+          ExpressionAttributeValues: expressionAttributeValues,
+          ExpressionAttributeNames: expressionAttributeNames,
+          ReturnValues: 'ALL_NEW',
+        })
+        .promise();
+      task = result.$response.data as Task;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+    return task;
+  }
+
+  async remove(id: string) {
+    let task: Task;
+    try {
+      const result = await dynamoDB
+        .delete({
+          TableName: process.env.TASKS_TABLE_NAME,
+          Key: { id },
+        })
+        .promise();
+      task = result.$response.data as Task;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+
+    if (!task) {
+      throw new NotFoundException(`The task with ID "${id} not found.`);
+    }
+
+    // return `The task with ID "${id}" was removed.`;
+    return task;
   }
 }

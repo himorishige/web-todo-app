@@ -1,18 +1,17 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  NotFoundException,
-  Param,
-  Patch,
   Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateTaskDto } from './dto/createTask.dto';
-import { UpdateTaskDto } from './dto/updateTask.dto';
-import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ResponseTaskDto, ResponseTasksDto } from './dto/response-task.dto';
 
 @Controller({
   path: 'tasks',
@@ -22,80 +21,67 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  @ApiOperation({ summary: 'create Task' })
   @ApiResponse({
     status: 200,
-    description: 'created success',
-    type: Task,
+    description: 'Successfully created.',
+    type: ResponseTaskDto,
   })
-  async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksService.create(createTaskDto);
+  @ApiOperation({ summary: 'Create a Task.' })
+  async create(@Body() createTaskDto: CreateTaskDto) {
+    const task = await this.tasksService.create(createTaskDto);
+
+    return { status: 'ok', data: task };
   }
 
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'found records',
-    type: [Task],
+    description: 'Found the records.',
+    type: ResponseTasksDto,
   })
-  async findAll(): Promise<Task[]> {
+  @ApiOperation({ summary: 'Get a list of tasks.' })
+  async findAll() {
     const tasks = await this.tasksService.findAll();
 
-    if (!tasks.length) {
-      throw new NotFoundException(`No tasks found`);
-    }
-
-    return tasks;
+    return { status: 'ok', data: tasks };
   }
 
   @Get(':id')
   @ApiResponse({
     status: 200,
-    description: 'found record',
-    type: Task,
+    description: 'Found the record.',
+    type: ResponseTaskDto,
   })
-  async findOne(@Param() { id }: any): Promise<Task> {
+  @ApiOperation({ summary: 'Get a single task.' })
+  async findOne(@Param('id') id: string) {
     const task = await this.tasksService.findOne(id);
 
-    if (!task) {
-      throw new NotFoundException(`Task with ID "${id}" not found`);
-    }
-
-    return task;
+    return { status: 'ok', data: task };
   }
 
   @Patch(':id')
   @ApiResponse({
     status: 200,
-    description: 'update success',
-    type: Task,
+    description: 'Successfully updated.',
+    type: ResponseTaskDto,
   })
-  async update(
-    @Param('id') id: string,
-    @Body() inputTask: UpdateTaskDto,
-  ): Promise<Task> {
-    const task = await this.tasksService.findOne(id);
+  @ApiOperation({ summary: 'Update the task with the specified ID.' })
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    const task = await this.tasksService.update(id, updateTaskDto);
 
-    if (!task) {
-      throw new NotFoundException(`Task with ID "${id}" not found`);
-    }
-
-    return this.tasksService.update({ ...task, ...inputTask });
+    return { status: 'ok', data: task };
   }
 
   @Delete(':id')
   @ApiResponse({
     status: 200,
-    description: 'delete success',
-    type: Task,
+    description: 'Successfully deleted.',
+    type: ResponseTaskDto,
   })
-  async delete(@Param('id') id: string) {
-    const task = await this.tasksService.findOne(id);
+  @ApiOperation({ summary: 'Remove the task with the specified ID.' })
+  async remove(@Param('id') id: string) {
+    const task = await this.tasksService.remove(id);
 
-    if (!task) {
-      throw new NotFoundException(`Task with ID "${id}" not found`);
-    }
-
-    return await this.tasksService.delete(id);
+    return { status: 'ok', data: task };
   }
 }
