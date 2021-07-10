@@ -16,8 +16,16 @@ export class Task {
   title: string;
 
   @ApiProperty({
+    example: 'メグミルクを2本',
+    description: 'タスク用メモ',
+    type: String,
+    nullable: true,
+  })
+  description?: string;
+
+  @ApiProperty({
     example: 1,
-    description: '優先タスク',
+    description: '優先度',
     type: Number,
   })
   priority: number;
