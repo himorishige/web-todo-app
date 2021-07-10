@@ -15,13 +15,27 @@ export class Task {
   })
   title: string;
 
+  @ApiProperty({
+    example: 1,
+    description: '優先タスク',
+    type: Number,
+  })
+  priority: number;
+
   @ApiProperty({ example: false, description: '完了フラグ', type: Boolean })
   isCompleted: boolean;
 
   @ApiProperty({
-    example: new Date('2021-1-1'),
-    description: '作成日',
-    type: Date,
+    example: new Date('2021-1-1').toISOString(),
+    description: '作成日時',
+    type: String,
   })
-  createdAt: Date;
+  createdAt: string;
+
+  @ApiProperty({
+    example: new Date('2021-2-1').toISOString(),
+    description: '更新日時',
+    type: String,
+  })
+  updatedAt: string;
 }
