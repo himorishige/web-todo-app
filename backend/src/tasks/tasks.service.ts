@@ -1,24 +1,7 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
-import * as AWS from 'aws-sdk';
-import { TasksRepository } from 'src/repositories/tasks.repository';
-import { v4 as uuid } from 'uuid';
+import { Injectable } from '@nestjs/common';
+import { TasksRepository } from './repositories/tasks.repository';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Task } from './entities/task.entity';
-
-let dynamoDB: AWS.DynamoDB.DocumentClient;
-if (process.env.IS_OFFLINE === 'true') {
-  dynamoDB = new AWS.DynamoDB.DocumentClient({
-    region: 'localhost',
-    endpoint: process.env.DYNAMODB_ENDPOINT,
-  });
-} else {
-  dynamoDB = new AWS.DynamoDB.DocumentClient();
-}
 
 @Injectable()
 export class TasksService {

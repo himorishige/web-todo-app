@@ -3,9 +3,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
-import { CreateTaskDto } from 'src/tasks/dto/create-task.dto';
-import { UpdateTaskDto } from 'src/tasks/dto/update-task.dto';
-import { Task } from 'src/tasks/entities/task.entity';
+import { CreateTaskDto } from '../dto/create-task.dto';
+import { UpdateTaskDto } from '../dto/update-task.dto';
+import { Task } from '../entities/task.entity';
 import { v4 as uuid } from 'uuid';
 
 let dynamoDB: AWS.DynamoDB.DocumentClient;
