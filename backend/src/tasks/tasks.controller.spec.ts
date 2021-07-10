@@ -41,6 +41,18 @@ describe('TasksController', () => {
     });
   });
 
+  describe('#findOne', () => {
+    it('should return a Task selected', async () => {
+      const result = taskData;
+      const id = '4de93414-2332-4834-b94d-c99bbe7de92b';
+
+      jest.spyOn(service, 'findOne').mockImplementation(() => result as any);
+
+      expect((await controller.findOne(id)).status).toBe('ok');
+      expect((await controller.findOne(id)).data).toEqual(result);
+    });
+  });
+
   describe('#create', () => {
     it('should return a task having an id', async () => {
       const result = taskData;
