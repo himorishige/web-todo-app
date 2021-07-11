@@ -1,5 +1,6 @@
 import { Global } from '@emotion/react';
 import { Story } from '@storybook/react';
+import { BrowserRouter } from 'react-router-dom';
 import 'sanitize.css';
 import { globalStyle } from '../src/styles/globalStyle';
 
@@ -22,9 +23,9 @@ export const parameters = {
 
 export const decorators = [
   (StoryFn: Story) => (
-    <>
+    <BrowserRouter>
       <Global styles={globalStyle} />
       <StoryFn />
-    </>
+    </BrowserRouter>
   ),
 ];
