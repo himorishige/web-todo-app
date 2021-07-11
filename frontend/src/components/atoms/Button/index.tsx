@@ -30,13 +30,19 @@ const Button: React.VFC<Props> = ({
 export default Button;
 
 const buttonStyle = css`
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
+  min-width: 80px;
+  height: 54px;
+  width: 100%;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
   background: var(--secondary-color);
   transition: opacity 0.3s ease-in-out;
   &:hover {
+    opacity: 0.8;
+  }
+  &:focus {
     opacity: 0.8;
   }
   &:disabled {

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { BsTable } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
@@ -8,7 +9,9 @@ const Header: React.VFC<Props> = () => {
   return (
     <div css={titleStyle}>
       <div>
-        <BsTable css={iconStyle} />
+        <Link to="/">
+          <BsTable css={iconStyle} />
+        </Link>
       </div>
       <h1 css={headingStyle}>ToDo App</h1>
     </div>
@@ -21,7 +24,14 @@ const titleStyle = css`
   display: flex;
   align-items: center;
   background: linear-gradient(to left, rgba(216, 179, 132, 1), rgba(216, 179, 132, 0.7));
-  padding: 1rem;
+  padding: 0.75rem 1.25rem;
+  a {
+    color: var(--black-color);
+    transition: opacity 0.3s;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 `;
 
 const headingStyle = css`

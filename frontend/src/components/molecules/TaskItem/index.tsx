@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { Link } from 'react-router-dom';
 import { CheckBox, StarIcon } from 'src/components/atoms';
 
 type Props = {
@@ -12,7 +13,7 @@ const TaskItem: React.VFC<Props> = ({ ...props }) => {
       <div css={itemLabelStyle}>
         <CheckBox />
         <div css={labelTextStyle}>
-          <a>牛乳を買ってくる</a>
+          <Link to="/">牛乳を買ってくる</Link>
         </div>
       </div>
       <div>
@@ -29,7 +30,7 @@ const taskItemStyle = css`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 1rem;
+  padding: 1.25rem;
   background: #f8f8f8;
   border-radius: 4px;
 `;

@@ -14,9 +14,10 @@ const Input: React.VFC<Props> = ({ placeholder, disabled = false, ...props }: Pr
 export default Input;
 
 const inputStyle = css`
+  -webkit-appearance: none;
   width: 100%;
-  padding: 0.5rem 1rem;
-  border: 2px solid #c5c5c5;
+  padding: 1rem;
+  border: 2px solid var(--primary-color);
   border-radius: 4px;
   &:disabled {
     background: #f8f8f8;
