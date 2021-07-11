@@ -81,6 +81,20 @@ export const tasksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(createTask.pending, (state) => {
+        state.status = 'loading';
+        state.message = '';
+      })
+      .addCase(createTask.fulfilled, (state, action: PayloadAction<ApiResponseType<Task>>) => {
+        state.status = 'idle';
+        tasksAdapter.addOne(state, action.payload.data);
+      })
+      .addCase(createTask.rejected, (state, action) => {
+        state.status = 'failed';
+        if (action.error?.message) {
+          state.message = action.error.message;
+        }
+      })
       .addCase(fetchAllTasks.pending, (state) => {
         state.status = 'loading';
         state.message = '';
@@ -91,7 +105,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(fetchAllTasks.rejected, (state, action) => {
         state.status = 'failed';
-        if (action.error.message) {
+        if (action.error?.message) {
           state.message = action.error.message;
         }
       })
@@ -101,9 +115,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(updateTask.fulfilled, (state, action: PayloadAction<ApiResponseType<Task>>) => {
         state.status = 'idle';
-        const {
-          data: { id, ...updateData },
-        } = action.payload;
+        const { id, ...updateData } = action.payload.data;
         tasksAdapter.updateOne(state, {
           id: id,
           changes: { ...updateData },
@@ -111,7 +123,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(updateTask.rejected, (state, action) => {
         state.status = 'failed';
-        if (action.error.message) {
+        if (action.error?.message) {
           state.message = action.error.message;
         }
       })
@@ -125,7 +137,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(removeTask.rejected, (state, action) => {
         state.status = 'failed';
-        if (action.error.message) {
+        if (action.error?.message) {
           state.message = action.error.message;
         }
       });
