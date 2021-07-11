@@ -1,6 +1,4 @@
-import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
@@ -9,6 +7,7 @@ import tasksReducer from './tasksSlice';
 
 import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
+import { BrowserRouter } from 'react-router-dom';
 
 // APIエンドポイント
 const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
@@ -61,14 +60,15 @@ describe('AsyncAPI Mock', () => {
   test('FetchAll', async () => {
     render(
       <Provider store={store}>
-        <Home />
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
-    userEvent.click(screen.getByText('fetch'));
     expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
   });
-  test('FetchAll Failed', async () => {
+  test('FetchAll Network Failed', async () => {
     server.use(
       rest.get(URL, (req, res, ctx) => {
         return res(ctx.status(404));
@@ -76,11 +76,12 @@ describe('AsyncAPI Mock', () => {
     );
     render(
       <Provider store={store}>
-        <Home />
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
-    userEvent.click(screen.getByText('fetch'));
-    expect(await screen.findByTestId('tasks-error')).toBeTruthy();
+    expect(await screen.findByTestId('tasks-net-error')).toBeTruthy();
   });
 });

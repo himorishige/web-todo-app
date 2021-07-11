@@ -144,8 +144,8 @@ export const tasksSlice = createSlice({
   },
 });
 
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-
 export const selectTasks = tasksAdapter.getSelectors<RootState>((state) => state.tasks);
+export const selectStatus = (state: RootState) => state.tasks.status;
+export const selectErrorMessage = (state: RootState) => state.tasks.message;
 
 export default tasksSlice.reducer;
