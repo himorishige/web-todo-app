@@ -4,20 +4,30 @@ import { Link } from 'react-router-dom';
 import { CheckBox, StarIcon } from 'src/components/atoms';
 
 type Props = {
-  onClick?: () => void;
+  id: string;
+  title: string;
+  isCompleted: boolean;
+  priority: number;
+  completedStateHandler: (id: string, isCompleted: boolean) => Promise<void>;
+  priorityStateHandler: (id: string, priority: number) => Promise<void>;
 };
 
-const TaskItem: React.VFC<Props> = ({ ...props }) => {
+const TaskItem: React.VFC<Props> = (props) => {
+  const { id, title, isCompleted, priority, completedStateHandler, priorityStateHandler } = props;
+
   return (
     <div css={taskItemStyle}>
       <div css={itemLabelStyle}>
-        <CheckBox />
+        <CheckBox
+          isCompleted={isCompleted}
+          onChange={() => completedStateHandler(id, !isCompleted)}
+        />
         <div css={labelTextStyle}>
-          <Link to="/">牛乳を買ってくる</Link>
+          <Link to={`/tasks/${id}`}>{title}</Link>
         </div>
       </div>
       <div>
-        <StarIcon />
+        <StarIcon status={priority} onClick={() => priorityStateHandler(id, +!priority)} />
       </div>
     </div>
   );
