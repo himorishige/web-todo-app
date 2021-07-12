@@ -8,6 +8,7 @@ describe('TasksController', () => {
   const taskData: Task = {
     id: '4de93414-2332-4834-b94d-c99bbe7de92b',
     title: '牛乳を買ってくる',
+    description: '',
     priority: 1,
     isCompleted: false,
     createdAt: new Date('2021-1-1').toISOString(),
@@ -59,6 +60,7 @@ describe('TasksController', () => {
 
       const param: CreateTaskDto = {
         title: '牛乳を買ってくる',
+        description: '',
         isCompleted: false,
         priority: 1,
       };
@@ -77,6 +79,7 @@ describe('TasksController', () => {
 
       const param: CreateTaskDto = {
         title: '卵を買ってくる',
+        description: '',
         isCompleted: false,
         priority: 1,
       };

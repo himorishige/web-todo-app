@@ -114,7 +114,7 @@ export class TasksService {
           ReturnValues: 'ALL_NEW',
         })
         .promise();
-      task = result.$response.data as Task;
+      task = result.Attributes as Task;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -130,7 +130,7 @@ export class TasksService {
           Key: { id },
         })
         .promise();
-      task = result.$response.data as Task;
+      task = result.Attributes as Task;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
