@@ -1,6 +1,7 @@
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
@@ -10,13 +11,14 @@ import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
   selectId: (task) => task.id,
-  sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt),
+  sortComparer: (a, b) => b.createdAt.localeCompare(a.createdAt),
 });
 
 export interface TasksState {
   tasks: Task[] | null;
   status: 'idle' | 'loading' | 'failed';
   message?: string;
+  filter: boolean;
 }
 
 // APIエンドポイント
@@ -73,7 +75,7 @@ export const updateTask = createAsyncThunk(
 export const removeTask = createAsyncThunk(
   'task/removeTask',
   async (id: string, { rejectWithValue }) => {
-    const response = await axios.delete<ApiResponseType<Task>>(`${URL}/${id}`).catch((error) => {
+    const response = await axios.delete<ApiResponseType<string>>(`${URL}/${id}`).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -86,8 +88,13 @@ export const tasksSlice = createSlice({
   initialState: tasksAdapter.getInitialState({
     status: 'idle',
     message: '',
+    filter: false,
   }),
-  reducers: {},
+  reducers: {
+    toggleFilter: (state) => {
+      state.filter = !state.filter;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createTask.pending, (state) => {
@@ -140,9 +147,9 @@ export const tasksSlice = createSlice({
         state.status = 'loading';
         state.message = '';
       })
-      .addCase(removeTask.fulfilled, (state, action: PayloadAction<ApiResponseType<Task>>) => {
+      .addCase(removeTask.fulfilled, (state, action: PayloadAction<ApiResponseType<string>>) => {
         state.status = 'idle';
-        tasksAdapter.removeOne(state, action.payload.data.id);
+        tasksAdapter.removeOne(state, action.payload.data);
       })
       .addCase(removeTask.rejected, (state, action) => {
         state.status = 'failed';
@@ -153,8 +160,11 @@ export const tasksSlice = createSlice({
   },
 });
 
+export const { toggleFilter } = tasksSlice.actions;
+
 export const selectTasks = tasksAdapter.getSelectors<RootState>((state) => state.tasks);
 export const selectStatus = (state: RootState) => state.tasks.status;
+export const selectStarStatus = (state: RootState) => state.tasks.filter;
 export const selectErrorMessage = (state: RootState) => state.tasks.message;
 
 export default tasksSlice.reducer;

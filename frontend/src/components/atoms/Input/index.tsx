@@ -9,6 +9,7 @@ type Inputs = {
 export type Props = {
   placeholder: string;
   disabled?: boolean;
+  maxLength?: number;
   label: Path<Inputs>;
   register: UseFormRegister<Inputs>;
   required: boolean;
@@ -17,6 +18,7 @@ export type Props = {
 const Input: React.VFC<Props> = ({
   placeholder,
   disabled = false,
+  maxLength = 40,
   label,
   register,
   required,
@@ -28,6 +30,7 @@ const Input: React.VFC<Props> = ({
       css={inputStyle}
       placeholder={placeholder}
       disabled={disabled}
+      maxLength={maxLength}
       {...register(label, { required })}
     />
   );

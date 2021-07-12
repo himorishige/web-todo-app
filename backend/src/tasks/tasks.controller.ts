@@ -11,7 +11,11 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResponseTaskDto, ResponseTasksDto } from './dto/response-task.dto';
+import {
+  ResponseRemoveTaskDto,
+  ResponseTaskDto,
+  ResponseTasksDto,
+} from './dto/response-task.dto';
 
 @Controller({
   path: 'tasks',
@@ -76,7 +80,7 @@ export class TasksController {
   @ApiResponse({
     status: 200,
     description: 'Successfully deleted.',
-    type: ResponseTaskDto,
+    type: ResponseRemoveTaskDto,
   })
   @ApiOperation({ summary: 'Remove the task with the specified ID.' })
   async remove(@Param('id') id: string) {

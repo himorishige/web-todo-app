@@ -12,6 +12,7 @@ describe('tasksSlice/ExtraReducer', () => {
         id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
         updatedAt: '2021-07-10T08:52:01.696Z',
         title: '卵を買ってくる',
+        description: '',
         isCompleted: false,
       },
       {
@@ -31,6 +32,7 @@ describe('tasksSlice/ExtraReducer', () => {
     data: {
       createdAt: '2021-07-10T08:52:01.696Z',
       priority: 0,
+      description: '',
       id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
       updatedAt: '2021-07-10T08:52:01.696Z',
       title: 'テスト卵を買ってくる',
@@ -46,6 +48,7 @@ describe('tasksSlice/ExtraReducer', () => {
   const initialState = tasksAdapter.getInitialState({
     status: 'idle',
     message: '',
+    filter: false,
   });
 
   test('初期値が正しく反映されている', () => {
@@ -54,6 +57,7 @@ describe('tasksSlice/ExtraReducer', () => {
       ids: [],
       status: 'idle',
       message: '',
+      filter: false,
     });
   });
 
@@ -174,20 +178,13 @@ describe('tasksSlice/ExtraReducer', () => {
     });
 
     test('削除成功時、更新したデータが削除されている', async () => {
-      const updateData: ApiResponseType<Task> = {
+      const removeData: ApiResponseType<string> = {
         status: 'ok',
-        data: {
-          createdAt: '2021-07-10T08:52:01.696Z',
-          priority: 0,
-          id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
-          updatedAt: '2021-07-10T08:52:01.696Z',
-          title: '卵を買ってくる',
-          isCompleted: true,
-        },
+        data: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
       };
-      action = { type: removeTask.fulfilled.type, payload: updateData };
+      action = { type: removeTask.fulfilled.type, payload: removeData };
       state = tasksReducer(state, action);
-      const target = tasksAdapter.getSelectors().selectById(state, updateData.data.id)?.id;
+      const target = tasksAdapter.getSelectors().selectById(state, removeData.data)?.id;
       expect(state.status).toEqual('idle');
       expect(state.ids).toHaveLength(1);
       expect(target).toBeUndefined();

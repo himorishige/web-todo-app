@@ -39,6 +39,7 @@ const buttonStyle = css`
   cursor: pointer;
   background: var(--secondary-color);
   transition: opacity 0.3s ease-in-out;
+  color: var(--primary-color);
   &:hover {
     opacity: 0.8;
   }

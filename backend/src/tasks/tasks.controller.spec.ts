@@ -93,13 +93,13 @@ describe('TasksController', () => {
 
   describe('#delete', () => {
     it('should return a task deleted', async () => {
-      const result = taskData;
       const id = '4de93414-2332-4834-b94d-c99bbe7de92b';
+      const result = id;
 
       jest.spyOn(service, 'remove').mockImplementation(() => result as any);
 
       expect((await controller.remove(id)).status).toBe('ok');
-      expect((await controller.remove(id)).data.id).toBeDefined();
+      expect((await controller.remove(id)).data).toBe(id);
     });
   });
 });

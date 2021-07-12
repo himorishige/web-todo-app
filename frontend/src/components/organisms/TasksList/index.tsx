@@ -1,19 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { TaskItem } from 'src/components/molecules';
+import { Message, TaskItem } from 'src/components/molecules';
 import { useAppSelector, useAppDispatch } from 'src/app/hooks';
 import { css } from '@emotion/react';
 import {
   selectErrorMessage,
+  selectStarStatus,
   selectStatus,
   selectTasks,
   updateTask,
 } from 'src/features/tasks/tasksSlice';
+import { useToast } from 'src/hooks/useToast';
 
 const TasksList: React.VFC = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
+  const starState = useAppSelector(selectStarStatus);
   const errorMessage = useAppSelector(selectErrorMessage);
   const tasks = useAppSelector(selectTasks.selectAll);
+  const { showToast } = useToast();
 
   // 完了フラグの管理
   const completedStateHandler = async (id: string, isCompleted: boolean) => {
@@ -24,12 +28,8 @@ const TasksList: React.VFC = () => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '完了フラグの更新に失敗しました');
     }
   };
 
@@ -42,23 +42,54 @@ const TasksList: React.VFC = () => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '優先度の更新に失敗しました');
     }
   };
 
-  return (
-    <div data-testid="tasks-area">
-      {status === 'failed' ? (
-        <div data-testid="tasks-net-error">
-          <p>{errorMessage}</p>
+  if (status === 'failed') {
+    return (
+      <div data-testid="tasks-area">
+        <div css={message} data-testid="tasks-net-error">
+          <Message>{errorMessage}</Message>
         </div>
-      ) : tasks.length ? (
-        tasks.map((task) => (
+      </div>
+    );
+  }
+
+  if (tasks.length && starState) {
+    return (
+      <div data-testid="tasks-area">
+        {tasks.filter((task) => task.priority === 1).length ? (
+          tasks
+            .filter((task) => task.priority === 1)
+            .map((task) => (
+              <div key={task.id} css={taskItemStyle} data-testid="task-item">
+                <TaskItem
+                  id={task.id}
+                  title={task.title}
+                  isCompleted={task.isCompleted}
+                  priority={task.priority}
+                  completedStateHandler={completedStateHandler}
+                  priorityStateHandler={priorityStateHandler}
+                />
+              </div>
+            ))
+        ) : (
+          <div data-testid="tasks-area">
+            <div css={message} data-testid="tasks-error">
+              <Message>登録されているお気に入りタスクはありません</Message>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (tasks.length && !starState) {
+    return (
+      <div data-testid="tasks-area">
+        {tasks.map((task) => (
           <div key={task.id} css={taskItemStyle} data-testid="task-item">
             <TaskItem
               id={task.id}
@@ -69,10 +100,16 @@ const TasksList: React.VFC = () => {
               priorityStateHandler={priorityStateHandler}
             />
           </div>
-        ))
-      ) : (
-        <div data-testid="tasks-error">タスクがありません</div>
-      )}
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div data-testid="tasks-area">
+      <div css={message} data-testid="tasks-error">
+        <Message>登録されているタスクはありません</Message>
+      </div>
     </div>
   );
 };
@@ -80,5 +117,9 @@ const TasksList: React.VFC = () => {
 export default TasksList;
 
 const taskItemStyle = css`
-  margin: 0.5rem 0.5rem;
+  margin: 0 auto 0.5rem;
+`;
+
+const message = css`
+  margin: 1.25rem;
 `;

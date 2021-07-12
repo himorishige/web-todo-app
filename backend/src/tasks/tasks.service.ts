@@ -122,24 +122,22 @@ export class TasksService {
   }
 
   async remove(id: string) {
-    let task: Task;
     try {
-      const result = await dynamoDB
+      await dynamoDB
         .delete({
           TableName: process.env.TASKS_TABLE_NAME,
           Key: { id },
         })
         .promise();
-      task = result.Attributes as Task;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
 
-    if (!task) {
-      throw new NotFoundException(`The task with ID "${id} not found.`);
-    }
+    // if (!task) {
+    //   throw new NotFoundException(`The task with ID "${id} not found.`);
+    // }
 
     // return `The task with ID "${id}" was removed.`;
-    return task;
+    return id;
   }
 }

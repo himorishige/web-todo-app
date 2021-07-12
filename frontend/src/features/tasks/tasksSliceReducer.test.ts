@@ -7,6 +7,7 @@ describe('tasksSlice/Reducer', () => {
       ids: [],
       status: 'idle',
       message: '',
+      filter: false,
     });
   });
 });
