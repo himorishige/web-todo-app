@@ -1,21 +1,54 @@
-import React, { useEffect } from 'react';
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useState } from 'react';
+import { css } from '@emotion/react';
 import { useAppDispatch } from 'src/app/hooks';
+import { Spinner } from 'src/components/atoms';
 import { TasksList } from 'src/components/organisms';
 import { Layout } from 'src/components/templates';
 import { fetchAllTasks } from 'src/features/tasks/tasksSlice';
 
 const Home: React.VFC = () => {
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchAllTasks());
+    const init = async () => {
+      const result = await dispatch(fetchAllTasks());
+
+      if (fetchAllTasks.fulfilled.match(result)) {
+        console.log('useEffect Updated');
+      }
+
+      if (fetchAllTasks.rejected.match(result)) {
+        console.log('useEffect not updated');
+      }
+      setIsLoading(false);
+    };
+    init();
+    return () => {
+      setIsLoading(false);
+    };
   }, [dispatch]);
 
   return (
     <Layout>
-      <TasksList />
+      {isLoading ? (
+        <div css={loadingStyle}>
+          <Spinner />
+        </div>
+      ) : (
+        <TasksList />
+      )}
     </Layout>
   );
 };
 
 export default Home;
+
+const loadingStyle = css`
+  width: 100%;
+  height: calc(100vh - 96px - 118px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

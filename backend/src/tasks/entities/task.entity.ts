@@ -19,9 +19,8 @@ export class Task {
     example: 'メグミルクを2本',
     description: 'タスク用メモ',
     type: String,
-    nullable: true,
   })
-  description?: string;
+  description: string;
 
   @ApiProperty({
     example: 1,

@@ -12,5 +12,5 @@ const Template: ComponentStory<typeof StarIcon> = (args) => <StarIcon {...args} 
 export const Default = Template.bind({});
 Default.storyName = 'PriorityButton';
 Default.args = {
-  status: false,
+  status: 0,
 };

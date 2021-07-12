@@ -22,15 +22,15 @@ export class CreateTaskDto {
 
   @IsString()
   @MaxLength(140, {
-    message: 'The name of the task should be no longer than 140 characters.',
+    message:
+      'The description of the task should be no longer than 140 characters.',
   })
   @ApiProperty({
     example: 'メグミルク2本',
     description: 'タスク用メモ',
     type: String,
-    nullable: true,
   })
-  description?: string;
+  description: string;
 
   @IsNumber()
   @ApiProperty({

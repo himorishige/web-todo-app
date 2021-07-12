@@ -2,15 +2,24 @@
 import { css } from '@emotion/react';
 
 export type Props = {
+  isCompleted?: boolean;
   disabled?: boolean;
   onChange?: () => void;
 };
 
-const CheckBox: React.VFC<Props> = ({ disabled = false, ...props }: Props) => {
+const CheckBox: React.VFC<Props> = (props) => {
+  const { isCompleted = false, disabled = false, onChange } = props;
+
   return (
     <>
       <label css={checkBoxStyle}>
-        <input type="checkbox" className="input" disabled={disabled} />
+        <input
+          type="checkbox"
+          className="input"
+          disabled={disabled}
+          defaultChecked={isCompleted}
+          onChange={onChange}
+        />
         <span className="dummy-input"></span>
       </label>
     </>
