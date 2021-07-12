@@ -47,7 +47,7 @@ const buttonStyle = css`
   }
   &:disabled {
     cursor: not-allowed;
-    background-color: #c5c5c5;
+    background-color: var(--secondary-color);
     &:hover {
       opacity: 1;
     }

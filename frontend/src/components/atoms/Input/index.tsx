@@ -1,14 +1,36 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { Path, UseFormRegister } from 'react-hook-form';
+
+type Inputs = {
+  taskName: string;
+};
 
 export type Props = {
   placeholder: string;
   disabled?: boolean;
-  onChange?: () => void;
+  label: Path<Inputs>;
+  register: UseFormRegister<Inputs>;
+  required: boolean;
 };
 
-const Input: React.VFC<Props> = ({ placeholder, disabled = false, ...props }: Props) => {
-  return <input type="text" css={inputStyle} placeholder={placeholder} disabled={disabled} />;
+const Input: React.VFC<Props> = ({
+  placeholder,
+  disabled = false,
+  label,
+  register,
+  required,
+  ...props
+}: Props) => {
+  return (
+    <input
+      type="text"
+      css={inputStyle}
+      placeholder={placeholder}
+      disabled={disabled}
+      {...register(label, { required })}
+    />
+  );
 };
 
 export default Input;

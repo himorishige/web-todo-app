@@ -10,7 +10,7 @@ const Layout: React.VFC<Props> = ({ children }) => {
   return (
     <div>
       <Header />
-      {children}
+      <main css={contentsStyle}>{children}</main>
       <footer css={footerStyle}>
         <Footer css={footerStyle} />
       </footer>
@@ -19,6 +19,12 @@ const Layout: React.VFC<Props> = ({ children }) => {
 };
 
 export default Layout;
+
+const contentsStyle = css`
+  min-height: calc (100vh - 88px);
+  position: relative;
+  padding-bottom: 118px;
+`;
 
 const footerStyle = css`
   position: fixed;
