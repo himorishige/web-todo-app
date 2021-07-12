@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from 'src/app/store';
-import { ApiResponseType, Task } from 'src/types';
+import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
   selectId: (task) => task.id,
@@ -37,7 +37,10 @@ export const fetchAllTasks = createAsyncThunk(
 // Taskを1件登録する
 export const createTask = createAsyncThunk(
   'tasks/createTask',
-  async (param: Pick<Task, 'title' | 'priority' | 'isCompleted'>, { rejectWithValue }) => {
+  async (
+    param: Pick<Task, 'title' | 'description' | 'priority' | 'isCompleted'>,
+    { rejectWithValue },
+  ) => {
     const response = await axios.post<ApiResponseType<Task>>(`${URL}`, param).catch((error) => {
       rejectWithValue(error);
       throw error;
@@ -49,7 +52,13 @@ export const createTask = createAsyncThunk(
 // Taskを1件更新する
 export const updateTask = createAsyncThunk(
   'tasks/updateTask',
-  async (param: Partial<Task>, { rejectWithValue }) => {
+  async (
+    param: WithOptional<
+      Task,
+      'title' | 'isCompleted' | 'priority' | 'description' | 'createdAt' | 'updatedAt'
+    >,
+    { rejectWithValue },
+  ) => {
     const response = await axios
       .patch<ApiResponseType<Task>>(`${URL}/${param.id}`, param)
       .catch((error) => {
