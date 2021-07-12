@@ -28,3 +28,17 @@ export class ResponseTasksDto {
   })
   data: Task[];
 }
+
+export class ResponseRemoveTaskDto {
+  @ApiProperty({
+    example: 'ok',
+    description: '取得ステータス',
+    type: String,
+  })
+  status: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  data: string;
+}
