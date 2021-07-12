@@ -4,7 +4,7 @@ import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
-import { TaskItem } from 'src/components/molecules';
+import { Message, TaskItem } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
 import { removeTask, selectStatus, selectTasks, updateTask } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
@@ -30,13 +30,7 @@ const DetailPage: React.VFC<Props> = (props) => {
   const { showToast } = useToast();
   const history = useHistory();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, watch } = useForm<Inputs>();
 
   // 完了フラグの管理
   const completedStateHandler = async (id: string, isCompleted: boolean) => {
@@ -83,17 +77,20 @@ const DetailPage: React.VFC<Props> = (props) => {
     }
   };
 
-  const deleteHandler = async () => {
-    const result = await dispatch(removeTask(taskId));
+  const confirmPromise = (message: string) => {
+    if (window.confirm(message)) {
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  };
 
-    if (updateTask.fulfilled.match(result)) {
+  const deleteHandler = async () => {
+    confirmPromise('タスクを削除してもよいですか？').then(async () => {
+      await dispatch(removeTask(taskId));
+
       showToast('SUCCESS', 'タスクを削除しました');
       history.push('/');
-    }
-
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', 'タスクの削除に失敗しました');
-    }
+    });
   };
 
   return (
@@ -131,7 +128,9 @@ const DetailPage: React.VFC<Props> = (props) => {
             </div>
           </form>
         ) : (
-          <div>タスクが見つかりませんでした</div>
+          <div css={message} data-testid="tasks-error">
+            <Message>該当するIDのタスクはありません</Message>
+          </div>
         )}
       </div>
     </Layout>
@@ -165,3 +164,5 @@ const controlWrapper = css`
   justify-content: space-between;
   align-items: center;
 `;
+
+const message = css``;

@@ -32,18 +32,24 @@ const Home: React.VFC = () => {
 
   return (
     <Layout>
-      {isLoading ? (
-        <div css={loadingStyle}>
-          <Spinner />
-        </div>
-      ) : (
-        <TasksList />
-      )}
+      <div css={wrapperStyle}>
+        {isLoading ? (
+          <div css={loadingStyle}>
+            <Spinner />
+          </div>
+        ) : (
+          <TasksList />
+        )}
+      </div>
     </Layout>
   );
 };
 
 export default Home;
+
+const wrapperStyle = css`
+  padding: 1.25rem;
+`;
 
 const loadingStyle = css`
   width: 100%;

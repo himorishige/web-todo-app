@@ -5,6 +5,7 @@ import { useToast } from 'src/hooks/useToast';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { createTask, selectStatus } from 'src/features/tasks/tasksSlice';
+import { useHistory, useLocation } from 'react-router-dom';
 
 type Props = {};
 
@@ -16,6 +17,8 @@ const Footer: React.VFC<Props> = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const { showToast } = useToast();
+  const history = useHistory();
+  const location = useLocation();
 
   const {
     register,
@@ -39,6 +42,9 @@ const Footer: React.VFC<Props> = () => {
     if (createTask.fulfilled.match(result)) {
       showToast('SUCCESS', 'タスクを登録しました');
       reset();
+      if (location.pathname !== '/') {
+        history.push('/');
+      }
     }
     if (createTask.rejected.match(result)) {
       const message = result.error.message;
