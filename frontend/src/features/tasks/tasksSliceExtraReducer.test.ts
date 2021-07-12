@@ -48,6 +48,7 @@ describe('tasksSlice/ExtraReducer', () => {
   const initialState = tasksAdapter.getInitialState({
     status: 'idle',
     message: '',
+    filter: false,
   });
 
   test('初期値が正しく反映されている', () => {
@@ -56,6 +57,7 @@ describe('tasksSlice/ExtraReducer', () => {
       ids: [],
       status: 'idle',
       message: '',
+      filter: false,
     });
   });
 
