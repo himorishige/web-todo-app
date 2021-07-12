@@ -73,7 +73,7 @@ export const updateTask = createAsyncThunk(
 export const removeTask = createAsyncThunk(
   'task/removeTask',
   async (id: string, { rejectWithValue }) => {
-    const response = await axios.delete<ApiResponseType<Task>>(`${URL}/${id}`).catch((error) => {
+    const response = await axios.delete<ApiResponseType<string>>(`${URL}/${id}`).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -140,9 +140,9 @@ export const tasksSlice = createSlice({
         state.status = 'loading';
         state.message = '';
       })
-      .addCase(removeTask.fulfilled, (state, action: PayloadAction<ApiResponseType<Task>>) => {
+      .addCase(removeTask.fulfilled, (state, action: PayloadAction<ApiResponseType<string>>) => {
         state.status = 'idle';
-        tasksAdapter.removeOne(state, action.payload.data.id);
+        tasksAdapter.removeOne(state, action.payload.data);
       })
       .addCase(removeTask.rejected, (state, action) => {
         state.status = 'failed';
