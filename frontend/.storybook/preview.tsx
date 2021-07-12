@@ -1,8 +1,11 @@
 import { Global } from '@emotion/react';
 import { Story } from '@storybook/react';
+import { ToastProvider } from '../src/hooks/useToast';
 import { BrowserRouter } from 'react-router-dom';
 import 'sanitize.css';
 import { globalStyle } from '../src/styles/globalStyle';
+import { Provider } from 'react-redux';
+import { store } from '../src/app/store';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -24,8 +27,12 @@ export const parameters = {
 export const decorators = [
   (StoryFn: Story) => (
     <BrowserRouter>
-      <Global styles={globalStyle} />
-      <StoryFn />
+      <Provider store={store}>
+        <Global styles={globalStyle} />
+        <ToastProvider>
+          <StoryFn />
+        </ToastProvider>
+      </Provider>
     </BrowserRouter>
   ),
 ];

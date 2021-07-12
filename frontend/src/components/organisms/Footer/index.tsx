@@ -27,10 +27,8 @@ const Footer: React.VFC<Props> = () => {
 export default Footer;
 
 const footerStyle = css`
-  position: fixed;
   background: var(--tertiary-color);
   width: 100%;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;

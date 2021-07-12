@@ -7,12 +7,15 @@ import { Global, css } from '@emotion/react';
 import * as serviceWorker from 'src/serviceWorker';
 import 'sanitize.css';
 import { globalStyle } from 'src/styles/globalStyle';
+import { ToastProvider } from './hooks/useToast';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Global styles={globalStyle} />
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
