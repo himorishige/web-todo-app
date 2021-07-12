@@ -8,12 +8,14 @@ import {
   selectTasks,
   updateTask,
 } from 'src/features/tasks/tasksSlice';
+import { useToast } from 'src/hooks/useToast';
 
 const TasksList: React.VFC = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const errorMessage = useAppSelector(selectErrorMessage);
   const tasks = useAppSelector(selectTasks.selectAll);
+  const { showToast } = useToast();
 
   // 完了フラグの管理
   const completedStateHandler = async (id: string, isCompleted: boolean) => {
@@ -24,12 +26,8 @@ const TasksList: React.VFC = () => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '完了フラグの更新に失敗しました');
     }
   };
 
@@ -42,12 +40,8 @@ const TasksList: React.VFC = () => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '優先度の更新に失敗しました');
     }
   };
 

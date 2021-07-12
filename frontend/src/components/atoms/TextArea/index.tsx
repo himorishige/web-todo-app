@@ -4,6 +4,7 @@ import { Path, UseFormRegister } from 'react-hook-form';
 
 export type Props = {
   placeholder: string;
+  defaultValue?: string;
   disabled?: boolean;
   label: Path<Inputs>;
   register: UseFormRegister<Inputs>;
@@ -17,6 +18,7 @@ type Inputs = {
 
 const TextArea: React.VFC<Props> = ({
   placeholder,
+  defaultValue,
   disabled = false,
   maxLength = 140,
   label,
@@ -30,6 +32,7 @@ const TextArea: React.VFC<Props> = ({
       {...register(label)}
       disabled={disabled}
       maxLength={maxLength}
+      defaultValue={defaultValue}
     />
   );
 };
@@ -44,6 +47,7 @@ const textAreaStyle = css`
   /* border: 2px solid var(--primary-color); */
   border: none;
   border-radius: 4px;
+  color: var(--primary-color);
   &:disabled {
     background: #f8f8f8;
   }

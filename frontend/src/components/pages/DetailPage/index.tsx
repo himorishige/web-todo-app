@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
 import { TaskItem } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
-import { selectStatus, selectTasks, updateTask } from 'src/features/tasks/tasksSlice';
-
+import { removeTask, selectStatus, selectTasks, updateTask } from 'src/features/tasks/tasksSlice';
+import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
 
 type Props = RouteComponentProps & {
@@ -27,6 +27,8 @@ const DetailPage: React.VFC<Props> = (props) => {
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
   const dispatch = useAppDispatch();
+  const { showToast } = useToast();
+  const history = useHistory();
 
   const {
     register,
@@ -45,12 +47,8 @@ const DetailPage: React.VFC<Props> = (props) => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '完了フラグの更新に失敗しました');
     }
   };
 
@@ -63,25 +61,39 @@ const DetailPage: React.VFC<Props> = (props) => {
       }),
     );
 
-    if (updateTask.fulfilled.match(result)) {
-      console.log('updated');
-    }
-
     if (updateTask.rejected.match(result)) {
-      console.log('not updated');
+      showToast('FAIL', '優先度の更新に失敗しました');
     }
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
+    const result = await dispatch(
+      updateTask({
+        id: taskId,
+        description: data.taskMemo,
+      }),
+    );
+
+    if (updateTask.fulfilled.match(result)) {
+      showToast('SUCCESS', 'メモを更新しました');
+    }
+
+    if (updateTask.rejected.match(result)) {
+      showToast('FAIL', 'メモの更新に失敗しました');
+    }
   };
 
-  const deleteHandler = () => {
-    console.log('delete');
-  };
+  const deleteHandler = async () => {
+    const result = await dispatch(removeTask(taskId));
 
-  const updateHandler = () => {
-    console.log('update');
+    if (updateTask.fulfilled.match(result)) {
+      showToast('SUCCESS', 'タスクを削除しました');
+      history.push('/');
+    }
+
+    if (updateTask.rejected.match(result)) {
+      showToast('FAIL', 'タスクの削除に失敗しました');
+    }
   };
 
   return (
@@ -98,7 +110,12 @@ const DetailPage: React.VFC<Props> = (props) => {
               priorityStateHandler={priorityStateHandler}
             />
             <div css={textAreaWrapper}>
-              <TextArea label="taskMemo" placeholder="メモ" register={register} />
+              <TextArea
+                label="taskMemo"
+                placeholder="メモ"
+                register={register}
+                defaultValue={task.description}
+              />
             </div>
             <div css={timeWrapper}>
               <div>登録：{format(new Date(task.createdAt), 'yyyy/MM/dd HH:mm')}</div>
@@ -109,7 +126,7 @@ const DetailPage: React.VFC<Props> = (props) => {
                 <TrashIcon />
               </div>
               <div>
-                <Button label="メモを更新" onClick={updateHandler} disabled={!watch('taskMemo')} />
+                <Button primary label="メモを更新" disabled={!watch('taskMemo')} />
               </div>
             </div>
           </form>
