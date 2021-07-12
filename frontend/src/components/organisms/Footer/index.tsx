@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 import { Button, Input } from 'src/components/atoms';
 import { useToast } from 'src/hooks/useToast';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useAppDispatch } from 'src/app/hooks';
-import { createTask } from 'src/features/tasks/tasksSlice';
+import { useAppDispatch, useAppSelector } from 'src/app/hooks';
+import { createTask, selectStatus } from 'src/features/tasks/tasksSlice';
 
 type Props = {};
 
@@ -14,6 +14,7 @@ type Inputs = {
 
 const Footer: React.VFC<Props> = () => {
   const dispatch = useAppDispatch();
+  const status = useAppSelector(selectStatus);
   const { showToast } = useToast();
 
   const {
@@ -43,7 +44,6 @@ const Footer: React.VFC<Props> = () => {
       const message = result.error.message;
       showToast('FAIL', `タスクの登録に失敗しました ${message}`);
     }
-    console.log('form-error', errors);
   };
 
   return (
@@ -55,10 +55,11 @@ const Footer: React.VFC<Props> = () => {
             placeholder="タスクを入力してください"
             register={register}
             required
+            disabled={status === 'loading'}
           />
         </div>
         <div css={buttonWrapper}>
-          <Button primary label="登録" disabled={!watch('taskName')} />
+          <Button primary label="登録" disabled={!watch('taskName') || status === 'loading'} />
         </div>
       </div>
     </form>
