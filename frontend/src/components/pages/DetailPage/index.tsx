@@ -6,9 +6,16 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
 import { Message, TaskItem } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
-import { removeTask, selectStatus, selectTasks, updateTask } from 'src/features/tasks/tasksSlice';
+import tasksSlice, {
+  fetchAllTasks,
+  removeTask,
+  selectStatus,
+  selectTasks,
+  updateTask,
+} from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
+import { useEffect } from 'react';
 
 type Props = RouteComponentProps & {
   match: {
@@ -92,6 +99,13 @@ const DetailPage: React.VFC<Props> = (props) => {
       history.push('/');
     });
   };
+
+  useEffect(() => {
+    if (!task) {
+      dispatch(fetchAllTasks());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Layout>
