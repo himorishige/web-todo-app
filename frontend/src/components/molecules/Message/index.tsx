@@ -30,5 +30,6 @@ const messageWrapper = css`
 
   p {
     margin-left: 1rem;
+    line-height: 1.5;
   }
 `;
