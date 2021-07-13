@@ -1,29 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { BsTable } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
-import { StarIcon } from 'src/components/atoms';
+import { HomeIcon, StarIcon } from 'src/components/atoms';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { selectStarStatus, toggleFilter } from 'src/features/tasks/tasksSlice';
+import { memo, useCallback } from 'react';
 
 type Props = {};
 
-const Header: React.VFC<Props> = () => {
+const Header: React.VFC<Props> = memo(() => {
   const dispatch = useAppDispatch();
   const starState = useAppSelector(selectStarStatus);
 
-  const toggleHandler = () => {
+  const toggleHandler = useCallback(() => {
     dispatch(toggleFilter());
-  };
+  }, [dispatch]);
 
   return (
     <div css={titleStyle}>
       <div css={innerStyle}>
-        <div>
-          <Link to="/">
-            <BsTable css={iconStyle} />
-          </Link>
-        </div>
+        <HomeIcon />
         <h1 css={headingStyle}>ToDo App</h1>
         <div css={starToggleStyle} onClick={toggleHandler}>
           <StarIcon status={+starState} />
@@ -31,7 +26,7 @@ const Header: React.VFC<Props> = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Header;
 
@@ -59,12 +54,6 @@ const innerStyle = css`
 const headingStyle = css`
   font-family: 'Poppins', sans-serif;
   margin: 0;
-`;
-
-const iconStyle = css`
-  width: 2rem;
-  height: 2rem;
-  margin-right: 0.5rem;
 `;
 
 const starToggleStyle = css`
