@@ -3,7 +3,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import tasksReducer from './tasksSlice';
+import tasksReducer from '../../../features/tasks/tasksSlice';
 
 import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
@@ -73,6 +73,27 @@ describe('AsyncAPI Mock', () => {
     server.use(
       rest.get(URL, (req, res, ctx) => {
         return res(ctx.status(404));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findByTestId('tasks-net-error')).toBeTruthy();
+  });
+  test('FetchAll Api Rejected', async () => {
+    server.use(
+      rest.get(URL, (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            error: 'error',
+          }),
+        );
       }),
     );
     render(
