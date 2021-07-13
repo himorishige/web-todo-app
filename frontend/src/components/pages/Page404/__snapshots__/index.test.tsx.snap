@@ -137,7 +137,7 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
     </div>
   </main>
   <footer
-    className="css-1wq4ert-Layout"
+    className="css-t18ryb-Layout"
   >
     <form
       onSubmit={[Function]}

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
@@ -18,7 +18,7 @@ import { format } from 'date-fns';
 import { useCallback, useEffect } from 'react';
 import { memo } from 'react';
 
-type Props = RouteComponentProps & {
+type Props = {
   match: {
     params: {
       id: string;
@@ -31,14 +31,14 @@ type Inputs = {
 };
 
 const DetailPage: React.VFC<Props> = memo((props) => {
-  const taskId = props.match.params.id;
+  const taskId = props.match?.params?.id || '404';
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
   const history = useHistory();
 
-  const { register, handleSubmit, watch } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   // 完了フラグの管理
   const completedStateHandler = useCallback(
@@ -112,7 +112,14 @@ const DetailPage: React.VFC<Props> = memo((props) => {
 
   useEffect(() => {
     if (!task) {
-      dispatch(fetchAllTasks());
+      const fetch = async () => {
+        const result = await dispatch(fetchAllTasks());
+
+        if (fetchAllTasks.rejected.match(result)) {
+          showToast('FAIL', 'タスクの取得に失敗しました');
+        }
+      };
+      fetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

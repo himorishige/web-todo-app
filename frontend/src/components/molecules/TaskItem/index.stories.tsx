@@ -9,5 +9,24 @@ export default {
 
 const Template: ComponentStory<typeof TaskItem> = (args) => <TaskItem {...args} />;
 
-export const Default = Template.bind({});
-Default.storyName = 'TaskItem';
+export const Checked = Template.bind({});
+Checked.storyName = 'TaskItem - Checked';
+Checked.args = {
+  id: 'link',
+  title: '牛乳を買ってくる',
+  description: 'メグミルク',
+  isCompleted: true,
+  priority: 0,
+  completedStateHandler: async () => {},
+};
+
+export const UnChecked = Template.bind({});
+UnChecked.storyName = 'TaskItem';
+UnChecked.args = {
+  id: 'link',
+  title: '牛乳を買ってくる',
+  description: 'メグミルク',
+  isCompleted: false,
+  priority: 0,
+  completedStateHandler: async () => {},
+};

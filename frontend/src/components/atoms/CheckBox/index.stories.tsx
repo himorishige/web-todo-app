@@ -9,8 +9,16 @@ export default {
 
 const Template: ComponentStory<typeof CheckBox> = (args) => <CheckBox {...args} />;
 
-export const Default = Template.bind({});
-Default.storyName = 'Default';
-Default.args = {
+export const Checked = Template.bind({});
+Checked.storyName = 'Checked';
+Checked.args = {
   disabled: false,
+  isCompleted: true,
+};
+
+export const UnChecked = Template.bind({});
+UnChecked.storyName = 'UnChecked';
+UnChecked.args = {
+  disabled: false,
+  isCompleted: false,
 };
