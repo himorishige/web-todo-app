@@ -2,10 +2,12 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { CheckBox, StarIcon } from 'src/components/atoms';
+import { BsPencilSquare } from 'react-icons/bs';
 
 type Props = {
   id: string;
   title: string;
+  description: string;
   isCompleted: boolean;
   priority: number;
   completedStateHandler: (id: string, isCompleted: boolean) => Promise<void>;
@@ -13,7 +15,15 @@ type Props = {
 };
 
 const TaskItem: React.VFC<Props> = (props) => {
-  const { id, title, isCompleted, priority, completedStateHandler, priorityStateHandler } = props;
+  const {
+    id,
+    title,
+    description,
+    isCompleted,
+    priority,
+    completedStateHandler,
+    priorityStateHandler,
+  } = props;
 
   return (
     <div css={taskItemStyle}>
@@ -23,7 +33,10 @@ const TaskItem: React.VFC<Props> = (props) => {
           onChange={() => completedStateHandler(id, !isCompleted)}
         />
         <div css={labelTextStyle}>
-          <Link to={`/tasks/${id}`}>{title}</Link>
+          <Link to={`/tasks/${id}`}>
+            {title}
+            {description ? <BsPencilSquare css={penStyle} /> : null}
+          </Link>
         </div>
       </div>
       <div>
@@ -61,9 +74,17 @@ const labelTextStyle = css`
     width: 100%;
     color: var(--black-color);
     text-decoration: none;
+    line-height: 1.5;
     &:hover {
       text-decoration: underline;
       color: var(--secondary-color);
     }
   }
+`;
+
+const penStyle = css`
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-left: 0.5rem;
+  vertical-align: sub;
 `;

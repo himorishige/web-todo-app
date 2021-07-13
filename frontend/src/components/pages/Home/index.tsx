@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/react';
-import { useAppDispatch } from 'src/app/hooks';
+import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { Spinner } from 'src/components/atoms';
 import { TasksList } from 'src/components/organisms';
 import { Layout } from 'src/components/templates';
-import { fetchAllTasks } from 'src/features/tasks/tasksSlice';
+import { fetchAllTasks, selectTasks } from 'src/features/tasks/tasksSlice';
 
 const Home: React.VFC = () => {
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  const tasks = useAppSelector(selectTasks.selectAll);
 
   useEffect(() => {
     const init = async () => {
@@ -22,23 +22,21 @@ const Home: React.VFC = () => {
       if (fetchAllTasks.rejected.match(result)) {
         console.log('useEffect not updated');
       }
-      setIsLoading(false);
     };
-    init();
-    return () => {
-      setIsLoading(false);
-    };
-  }, [dispatch]);
+    if (!tasks.length) {
+      init();
+    }
+  }, [dispatch, tasks]);
 
   return (
     <Layout>
       <div css={wrapperStyle}>
-        {isLoading ? (
+        {tasks.length ? (
+          <TasksList />
+        ) : (
           <div css={loadingStyle}>
             <Spinner />
           </div>
-        ) : (
-          <TasksList />
         )}
       </div>
     </Layout>

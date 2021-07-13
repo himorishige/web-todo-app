@@ -23,7 +23,7 @@ export const ToastProvider: React.VFC<Props> = (props) => {
 
   const showToast = (toastType: TOAST_TYPE, message: string) => {
     update({ show: true, message, toastType });
-    setTimeout(() => update({ ...state, show: false, message: message }), 4000);
+    setTimeout(() => update({ ...state, show: false, message: message }), 3000);
   };
 
   return (
@@ -61,7 +61,7 @@ to {
 `;
 
 const toastStyle = css`
-  animation: ${FadeIn} 0.3s, ${FadeOut} 0.3s 3s forwards;
+  animation: ${FadeIn} 0.3s, ${FadeOut} 0.3s 1.5s forwards;
   position: fixed;
   display: flex;
   align-items: center;
