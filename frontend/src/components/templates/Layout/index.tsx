@@ -21,6 +21,8 @@ const Layout: React.VFC<Props> = ({ children }) => {
 export default Layout;
 
 const contentsStyle = css`
+  max-width: 768px;
+  margin: 0 auto;
   min-height: calc (100vh - 88px);
   position: relative;
   padding-bottom: 118px;

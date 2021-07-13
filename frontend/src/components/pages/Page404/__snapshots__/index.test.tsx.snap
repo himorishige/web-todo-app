@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pages/Page404 正しくレンダリングされている 1`] = `
+<div>
+  <div
+    className="css-1yijvt1-Header"
+  >
+    <div
+      className="css-1jlild9-Header"
+    >
+      <div>
+        <a
+          href="/"
+          onClick={[Function]}
+        >
+          <svg
+            className="css-55kl4y-Header"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            strokeWidth="0"
+            style={
+              Object {
+                "color": undefined,
+              }
+            }
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clipRule="evenodd"
+              d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z"
+              fillRule="evenodd"
+            />
+            <path
+              clipRule="evenodd"
+              d="M15 4H1V3h14v1z"
+              fillRule="evenodd"
+            />
+            <path
+              clipRule="evenodd"
+              d="M5 15.5v-14h1v14H5zm5 0v-14h1v14h-1z"
+              fillRule="evenodd"
+            />
+            <path
+              clipRule="evenodd"
+              d="M15 8H1V7h14v1zm0 4H1v-1h14v1z"
+              fillRule="evenodd"
+            />
+            <path
+              d="M0 2a2 2 0 012-2h12a2 2 0 012 2v2H0V2z"
+            />
+          </svg>
+        </a>
+      </div>
+      <h1
+        className="css-18oezlj-Header"
+      >
+        ToDo App
+      </h1>
+      <div
+        className="css-196eofb-Header"
+        onClick={[Function]}
+      >
+        <div
+          className="css-1ehoqgt-StarIcon"
+        >
+          <svg
+            className="css-myvxei-StarIcon"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            strokeWidth="0"
+            style={
+              Object {
+                "color": undefined,
+              }
+            }
+            viewBox="0 0 16 16"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clipRule="evenodd"
+              d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z"
+              fillRule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <main
+    className="css-1yvttm9-Layout"
+  >
+    <div
+      className="css-12rbfex-Page404"
+    >
+      <div
+        className="css-1no44b2-Message"
+      >
+        <svg
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          strokeWidth="0"
+          style={
+            Object {
+              "color": undefined,
+            }
+          }
+          viewBox="0 0 16 16"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clipRule="evenodd"
+            d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
+            fillRule="evenodd"
+          />
+          <path
+            d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"
+          />
+          <circle
+            cx="8"
+            cy="4.5"
+            r="1"
+          />
+        </svg>
+        <p>
+          404 Page Not Found...
+          <br />
+          ページが見つかりませんでした。
+        </p>
+      </div>
+    </div>
+  </main>
+  <footer
+    className="css-1wq4ert-Layout"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="css-1kaljcd-Footer"
+      >
+        <div
+          className="css-1eu1myn-Footer"
+        >
+          <div
+            className="css-1i482nr-Footer"
+          >
+            <input
+              className="css-1gxkf0o-Input"
+              disabled={false}
+              maxLength={40}
+              name="taskName"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="タスクを入力してください"
+              type="text"
+            />
+          </div>
+          <div
+            className="css-opdh1n-Footer"
+          >
+            <button
+              className="css-1gdk01o-Button"
+              disabled={true}
+            >
+              登録
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </footer>
+</div>
+`;

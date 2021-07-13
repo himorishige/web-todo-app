@@ -122,6 +122,4 @@ const taskItemStyle = css`
   margin: 0 auto 0.5rem;
 `;
 
-const message = css`
-  margin: 1.25rem;
-`;
+const message = css``;
