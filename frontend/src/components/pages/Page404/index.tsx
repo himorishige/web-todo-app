@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { Message } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
 
 type Props = {};
@@ -7,14 +8,20 @@ type Props = {};
 const Page404: React.VFC<Props> = () => {
   return (
     <Layout>
-      <div css={footerStyle}>404</div>
+      <div css={wrapperStyle}>
+        <Message>
+          404 Page Not Found...
+          <br />
+          ページが見つかりませんでした。
+        </Message>
+      </div>
     </Layout>
   );
 };
 
 export default Page404;
 
-const footerStyle = css`
+const wrapperStyle = css`
   display: flex;
   align-items: center;
   padding: 1rem;

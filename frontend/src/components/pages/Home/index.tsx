@@ -5,11 +5,11 @@ import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { Spinner } from 'src/components/atoms';
 import { TasksList } from 'src/components/organisms';
 import { Layout } from 'src/components/templates';
-import { fetchAllTasks, selectTasks } from 'src/features/tasks/tasksSlice';
+import { fetchAllTasks, selectStatus } from 'src/features/tasks/tasksSlice';
 
 const Home: React.VFC = () => {
   const dispatch = useAppDispatch();
-  const tasks = useAppSelector(selectTasks.selectAll);
+  const status = useAppSelector(selectStatus);
 
   useEffect(() => {
     const init = async () => {
@@ -23,20 +23,18 @@ const Home: React.VFC = () => {
         console.log('useEffect not updated');
       }
     };
-    if (!tasks.length) {
-      init();
-    }
-  }, [dispatch, tasks]);
+    init();
+  }, [dispatch]);
 
   return (
     <Layout>
       <div css={wrapperStyle}>
-        {tasks.length ? (
-          <TasksList />
-        ) : (
+        {status === 'loading' ? (
           <div css={loadingStyle}>
             <Spinner />
           </div>
+        ) : (
+          <TasksList />
         )}
       </div>
     </Layout>
