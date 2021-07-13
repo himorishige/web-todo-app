@@ -49,7 +49,7 @@ afterEach(() => {
 });
 afterAll(() => server.close());
 
-describe('AsyncAPI Mock', () => {
+describe('HomePage', () => {
   let store: any;
   beforeEach(() => {
     store = configureStore({
@@ -58,7 +58,7 @@ describe('AsyncAPI Mock', () => {
       },
     });
   });
-  test('FetchAll', async () => {
+  test('APIから出力されたタスクが2件表示される', async () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
@@ -69,7 +69,7 @@ describe('AsyncAPI Mock', () => {
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
     expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
   });
-  test('FetchAll Network Failed', async () => {
+  test('ネットワークエラーの時にエラーメッセージが表示される', async () => {
     server.use(
       rest.get(URL, (req, res, ctx) => {
         return res(ctx.status(404));
@@ -85,7 +85,7 @@ describe('AsyncAPI Mock', () => {
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
     expect(await screen.findByTestId('tasks-net-error')).toBeTruthy();
   });
-  test('FetchAll Api Rejected', async () => {
+  test('API拒否時にエラーが表示される', async () => {
     server.use(
       rest.get(URL, (req, res, ctx) => {
         return res(
