@@ -7,11 +7,16 @@ export default {
   component: TextArea,
 } as ComponentMeta<typeof TextArea>;
 
-const Template: ComponentStory<typeof TextArea> = (args) => <TextArea {...args} />;
+const Template: ComponentStory<typeof TextArea> = (args) => {
+  return <TextArea {...args} />;
+};
 
 export const Default = Template.bind({});
 Default.storyName = 'Default';
 Default.args = {
   placeholder: 'メモ',
   disabled: false,
+  label: 'taskMemo',
+  //@ts-ignore
+  register: () => {},
 };

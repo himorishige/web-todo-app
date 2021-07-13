@@ -14,4 +14,7 @@ Primary.storyName = 'Primary';
 Primary.args = {
   placeholder: 'タスクを入力してください',
   disabled: false,
+  label: 'taskName',
+  //@ts-ignore
+  register: () => {},
 };
