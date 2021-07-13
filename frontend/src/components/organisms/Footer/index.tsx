@@ -55,17 +55,19 @@ const Footer: React.VFC<Props> = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div css={footerStyle}>
-        <div css={inputWrapper}>
-          <Input
-            label="taskName"
-            placeholder="タスクを入力してください"
-            register={register}
-            required
-            disabled={status === 'loading'}
-          />
-        </div>
-        <div css={buttonWrapper}>
-          <Button primary label="登録" disabled={!watch('taskName') || status === 'loading'} />
+        <div css={innerStyle}>
+          <div css={inputWrapper}>
+            <Input
+              label="taskName"
+              placeholder="タスクを入力してください"
+              register={register}
+              required
+              disabled={status === 'loading'}
+            />
+          </div>
+          <div css={buttonWrapper}>
+            <Button primary label="登録" disabled={!watch('taskName') || status === 'loading'} />
+          </div>
         </div>
       </div>
     </form>
@@ -77,10 +79,15 @@ export default Footer;
 const footerStyle = css`
   background: var(--tertiary-color);
   width: 100%;
+`;
+
+const innerStyle = css`
+  max-width: 768px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem 1.25rem;
+  margin: 0 auto;
 `;
 
 const inputWrapper = css`
