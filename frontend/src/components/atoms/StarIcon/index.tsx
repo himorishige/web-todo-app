@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { BsFillStarFill } from 'react-icons/bs';
+import { BsStarFill, BsStar } from 'react-icons/bs';
 
 type Props = {
   status?: number;
@@ -11,9 +11,17 @@ const StarIcon: React.VFC<Props> = (props) => {
   const { status, onClick } = props;
 
   return (
-    <div css={wrapper} onClick={onClick}>
-      <BsFillStarFill css={[defaultStyle, status ? onStyle : offStyle]} />
-    </div>
+    <>
+      {status === 1 ? (
+        <div css={wrapper} onClick={onClick}>
+          <BsStarFill css={[defaultStyle, onStyle]} />
+        </div>
+      ) : (
+        <div css={wrapper} onClick={onClick}>
+          <BsStar css={[defaultStyle, offStyle]} />
+        </div>
+      )}
+    </>
   );
 };
 
@@ -28,7 +36,7 @@ const wrapper = css`
 const defaultStyle = css`
   width: 1.5rem;
   height: 1.5rem;
-  color: #c5c5c5;
+  color: var(--primary-color);
   transition: transform 0.2s, color 0.3s;
   cursor: pointer;
   &:hover {
@@ -41,10 +49,13 @@ const defaultStyle = css`
 
 const onStyle = css`
   transition: color 0.3s;
-  color: #ffbb00;
+  color: #ffee00;
+  filter: drop-shadow(0px 1px 2px rgba(44, 27, 31, 0.3));
+  text-shadow: black;
+  box-shadow: black;
 `;
 
 const offStyle = css`
   transition: color 0.3s;
-  color: #c5c5c5;
+  color: var(--primary-color);
 `;
