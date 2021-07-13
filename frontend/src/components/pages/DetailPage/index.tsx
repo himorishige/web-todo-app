@@ -101,6 +101,7 @@ const DetailPage: React.VFC<Props> = (props) => {
             <TaskItem
               id={task.id}
               title={task.title}
+              description={task.description}
               isCompleted={task.isCompleted}
               priority={task.priority}
               completedStateHandler={completedStateHandler}
@@ -123,7 +124,7 @@ const DetailPage: React.VFC<Props> = (props) => {
                 <TrashIcon />
               </div>
               <div>
-                <Button primary label="メモを更新" disabled={!watch('taskMemo')} />
+                <Button primary label="メモを更新" disabled={status === 'loading'} />
               </div>
             </div>
           </form>

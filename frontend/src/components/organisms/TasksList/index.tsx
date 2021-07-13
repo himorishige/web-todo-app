@@ -68,6 +68,7 @@ const TasksList: React.VFC = () => {
                 <TaskItem
                   id={task.id}
                   title={task.title}
+                  description={task.description}
                   isCompleted={task.isCompleted}
                   priority={task.priority}
                   completedStateHandler={completedStateHandler}
@@ -78,7 +79,7 @@ const TasksList: React.VFC = () => {
         ) : (
           <div data-testid="tasks-area">
             <div css={message} data-testid="tasks-error">
-              <Message>登録されているお気に入りタスクはありません</Message>
+              <Message>登録されているお気に入りのタスクはありません</Message>
             </div>
           </div>
         )}
@@ -94,6 +95,7 @@ const TasksList: React.VFC = () => {
             <TaskItem
               id={task.id}
               title={task.title}
+              description={task.description}
               isCompleted={task.isCompleted}
               priority={task.priority}
               completedStateHandler={completedStateHandler}
