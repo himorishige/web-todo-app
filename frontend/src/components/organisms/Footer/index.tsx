@@ -22,13 +22,7 @@ const Footer: React.VFC<Props> = memo(() => {
   const history = useHistory();
   const location = useLocation();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, watch, reset } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     async (data) => {
