@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { Path, UseFormRegister } from 'react-hook-form';
 
 export type Props = {
@@ -16,26 +17,28 @@ type Inputs = {
   taskMemo: string;
 };
 
-const TextArea: React.VFC<Props> = ({
-  placeholder,
-  defaultValue,
-  disabled = false,
-  maxLength = 140,
-  label,
-  register,
-  ...props
-}: Props) => {
-  return (
-    <textarea
-      css={textAreaStyle}
-      placeholder={placeholder}
-      {...register(label)}
-      disabled={disabled}
-      maxLength={maxLength}
-      defaultValue={defaultValue}
-    />
-  );
-};
+const TextArea: React.VFC<Props> = memo(
+  ({
+    placeholder,
+    defaultValue,
+    disabled = false,
+    maxLength = 140,
+    label,
+    register,
+    ...props
+  }: Props) => {
+    return (
+      <textarea
+        css={textAreaStyle}
+        placeholder={placeholder}
+        {...register(label)}
+        disabled={disabled}
+        maxLength={maxLength}
+        defaultValue={defaultValue}
+      />
+    );
+  },
+);
 
 export default TextArea;
 

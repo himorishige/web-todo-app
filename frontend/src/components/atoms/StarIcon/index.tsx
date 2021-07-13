@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const StarIcon: React.VFC<Props> = (props) => {
+const StarIcon: React.VFC<Props> = memo((props) => {
   const { status, onClick } = props;
 
   return (
@@ -23,7 +24,7 @@ const StarIcon: React.VFC<Props> = (props) => {
       )}
     </>
   );
-};
+});
 
 export default StarIcon;
 

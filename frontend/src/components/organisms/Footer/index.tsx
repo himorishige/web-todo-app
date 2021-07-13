@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { createTask, selectStatus } from 'src/features/tasks/tasksSlice';
 import { useHistory, useLocation } from 'react-router-dom';
+import { memo } from 'react';
+import { useCallback } from 'react';
 
 type Props = {};
 
@@ -13,7 +15,7 @@ type Inputs = {
   taskName: string;
 };
 
-const Footer: React.VFC<Props> = () => {
+const Footer: React.VFC<Props> = memo(() => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const { showToast } = useToast();
@@ -28,29 +30,32 @@ const Footer: React.VFC<Props> = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // タスクの登録
-    const result = await dispatch(
-      createTask({
-        title: data.taskName,
-        description: '',
-        priority: 0,
-        isCompleted: false,
-      }),
-    );
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    async (data) => {
+      // タスクの登録
+      const result = await dispatch(
+        createTask({
+          title: data.taskName,
+          description: '',
+          priority: 0,
+          isCompleted: false,
+        }),
+      );
 
-    if (createTask.fulfilled.match(result)) {
-      showToast('SUCCESS', 'タスクを登録しました');
-      reset();
-      if (location.pathname !== '/') {
-        history.push('/');
+      if (createTask.fulfilled.match(result)) {
+        showToast('SUCCESS', 'タスクを登録しました');
+        reset();
+        if (location.pathname !== '/') {
+          history.push('/');
+        }
       }
-    }
-    if (createTask.rejected.match(result)) {
-      const message = result.error.message;
-      showToast('FAIL', `タスクの登録に失敗しました ${message}`);
-    }
-  };
+      if (createTask.rejected.match(result)) {
+        const message = result.error.message;
+        showToast('FAIL', `タスクの登録に失敗しました ${message}`);
+      }
+    },
+    [dispatch, history, location.pathname, reset, showToast],
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,7 +77,7 @@ const Footer: React.VFC<Props> = () => {
       </div>
     </form>
   );
-};
+});
 
 export default Footer;
 

@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
 
 type Props = {
   children: React.ReactNode;
 };
 
-const Message: React.VFC<Props> = (props) => {
+const Message: React.VFC<Props> = memo((props) => {
   const { children } = props;
 
   return (
@@ -15,7 +16,7 @@ const Message: React.VFC<Props> = (props) => {
       <p>{children}</p>
     </div>
   );
-};
+});
 
 export default Message;
 

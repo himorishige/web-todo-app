@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, { memo } from 'react';
 import { css, keyframes } from '@emotion/react';
 
 export type Props = {
@@ -8,7 +8,7 @@ export type Props = {
   radius?: string;
 };
 
-const Skelton: React.VFC<Props> = (props) => {
+const Skelton: React.VFC<Props> = memo((props) => {
   const { height = '4rem', width = '100%', radius = '0' } = props;
 
   return (
@@ -17,7 +17,7 @@ const Skelton: React.VFC<Props> = (props) => {
       style={{ width: `${width}`, height: `${height}`, borderRadius: `${radius}` }}
     />
   );
-};
+});
 
 export default Skelton;
 

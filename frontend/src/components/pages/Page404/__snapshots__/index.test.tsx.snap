@@ -3,10 +3,10 @@
 exports[`pages/Page404 正しくレンダリングされている 1`] = `
 <div>
   <div
-    className="css-1yijvt1-Header"
+    className="css-1hrd1c8"
   >
     <div
-      className="css-1jlild9-Header"
+      className="css-1hh8z22"
     >
       <div>
         <a
@@ -14,7 +14,7 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
           onClick={[Function]}
         >
           <svg
-            className="css-55kl4y-Header"
+            className="css-1443oa1"
             fill="currentColor"
             height="1em"
             stroke="currentColor"
@@ -55,19 +55,19 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
         </a>
       </div>
       <h1
-        className="css-18oezlj-Header"
+        className="css-1llq2fx"
       >
         ToDo App
       </h1>
       <div
-        className="css-196eofb-Header"
+        className="css-knz8lr"
         onClick={[Function]}
       >
         <div
-          className="css-1ehoqgt-StarIcon"
+          className="css-kknodv"
         >
           <svg
-            className="css-myvxei-StarIcon"
+            className="css-ba990d"
             fill="currentColor"
             height="1em"
             stroke="currentColor"
@@ -95,10 +95,10 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
     className="css-1yvttm9-Layout"
   >
     <div
-      className="css-12rbfex-Page404"
+      className="css-29olxo"
     >
       <div
-        className="css-1no44b2-Message"
+        className="css-1sbdpyj"
       >
         <svg
           fill="currentColor"
@@ -143,16 +143,16 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="css-1kaljcd-Footer"
+        className="css-1qqqf83"
       >
         <div
-          className="css-1eu1myn-Footer"
+          className="css-7d0ne1"
         >
           <div
-            className="css-1i482nr-Footer"
+            className="css-1ago99h"
           >
             <input
-              className="css-1gxkf0o-Input"
+              className="css-5x3p9d"
               disabled={false}
               maxLength={40}
               name="taskName"
@@ -163,10 +163,10 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
             />
           </div>
           <div
-            className="css-opdh1n-Footer"
+            className="css-75wbz6"
           >
             <button
-              className="css-1gdk01o-Button"
+              className="css-k3l7h4"
               disabled={true}
             >
               登録

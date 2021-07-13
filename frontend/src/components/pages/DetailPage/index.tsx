@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
 import { Message, TaskItem } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
-import tasksSlice, {
+import {
   fetchAllTasks,
   removeTask,
   selectStatus,
@@ -15,7 +15,8 @@ import tasksSlice, {
 } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { memo } from 'react';
 
 type Props = RouteComponentProps & {
   match: {
@@ -29,7 +30,7 @@ type Inputs = {
   taskMemo: string;
 };
 
-const DetailPage: React.VFC<Props> = (props) => {
+const DetailPage: React.VFC<Props> = memo((props) => {
   const taskId = props.match.params.id;
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
@@ -40,65 +41,74 @@ const DetailPage: React.VFC<Props> = (props) => {
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
   // 完了フラグの管理
-  const completedStateHandler = async (id: string, isCompleted: boolean) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        isCompleted: isCompleted,
-      }),
-    );
+  const completedStateHandler = useCallback(
+    async (id: string, isCompleted: boolean) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          isCompleted: isCompleted,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '完了フラグの更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '完了フラグの更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
   // 優先度フラグの管理
-  const priorityStateHandler = async (id: string, priority: number) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        priority: priority,
-      }),
-    );
+  const priorityStateHandler = useCallback(
+    async (id: string, priority: number) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          priority: priority,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '優先度の更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '優先度の更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const result = await dispatch(
-      updateTask({
-        id: taskId,
-        description: data.taskMemo,
-      }),
-    );
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    async (data) => {
+      const result = await dispatch(
+        updateTask({
+          id: taskId,
+          description: data.taskMemo,
+        }),
+      );
 
-    if (updateTask.fulfilled.match(result)) {
-      showToast('SUCCESS', 'メモを更新しました');
-    }
+      if (updateTask.fulfilled.match(result)) {
+        showToast('SUCCESS', 'メモを更新しました');
+      }
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', 'メモの更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', 'メモの更新に失敗しました');
+      }
+    },
+    [dispatch, showToast, taskId],
+  );
 
-  const confirmPromise = (message: string) => {
+  const confirmPromise = useCallback((message: string) => {
     if (window.confirm(message)) {
       return Promise.resolve();
     }
     return Promise.reject();
-  };
+  }, []);
 
-  const deleteHandler = async () => {
+  const deleteHandler = useCallback(async () => {
     confirmPromise('タスクを削除してもよいですか？').then(async () => {
       await dispatch(removeTask(taskId));
 
       showToast('SUCCESS', 'タスクを削除しました');
       history.push('/');
     });
-  };
+  }, [confirmPromise, dispatch, history, showToast, taskId]);
 
   useEffect(() => {
     if (!task) {
@@ -150,7 +160,7 @@ const DetailPage: React.VFC<Props> = (props) => {
       </div>
     </Layout>
   );
-};
+});
 
 export default DetailPage;
 

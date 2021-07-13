@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 
 export type Props = {
   primary?: boolean;
@@ -9,23 +10,19 @@ export type Props = {
   onClick?: () => void;
 };
 
-const Button: React.VFC<Props> = ({
-  primary = false,
-  size = 'medium',
-  label,
-  disabled = false,
-  ...props
-}: Props) => {
-  return (
-    <button
-      css={[buttonStyle, primary ? primaryStyle : secondaryStyle]}
-      disabled={disabled}
-      {...props}
-    >
-      {label}
-    </button>
-  );
-};
+const Button: React.VFC<Props> = memo(
+  ({ primary = false, size = 'medium', label, disabled = false, ...props }: Props) => {
+    return (
+      <button
+        css={[buttonStyle, primary ? primaryStyle : secondaryStyle]}
+        disabled={disabled}
+        {...props}
+      >
+        {label}
+      </button>
+    );
+  },
+);
 
 export default Button;
 

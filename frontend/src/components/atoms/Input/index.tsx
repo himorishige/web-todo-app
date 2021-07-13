@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { Path, UseFormRegister } from 'react-hook-form';
 
 type Inputs = {
@@ -15,26 +16,28 @@ export type Props = {
   required: boolean;
 };
 
-const Input: React.VFC<Props> = ({
-  placeholder,
-  disabled = false,
-  maxLength = 40,
-  label,
-  register,
-  required,
-  ...props
-}: Props) => {
-  return (
-    <input
-      type="text"
-      css={inputStyle}
-      placeholder={placeholder}
-      disabled={disabled}
-      maxLength={maxLength}
-      {...register(label, { required })}
-    />
-  );
-};
+const Input: React.VFC<Props> = memo(
+  ({
+    placeholder,
+    disabled = false,
+    maxLength = 40,
+    label,
+    register,
+    required,
+    ...props
+  }: Props) => {
+    return (
+      <input
+        type="text"
+        css={inputStyle}
+        placeholder={placeholder}
+        disabled={disabled}
+        maxLength={maxLength}
+        {...register(label, { required })}
+      />
+    );
+  },
+);
 
 export default Input;
 
