@@ -1,18 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { BsTrash } from 'react-icons/bs';
 
-type Props = {
-  onClick?: () => void;
-};
-
-const TrashIcon: React.VFC<Props> = ({ ...props }) => {
+const TrashIcon: React.VFC = memo(() => {
   return (
     <div>
       <BsTrash css={defaultStyle} />
     </div>
   );
-};
+});
 
 export default TrashIcon;
 

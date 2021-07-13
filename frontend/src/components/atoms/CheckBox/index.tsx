@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 
 export type Props = {
   isCompleted?: boolean;
@@ -7,7 +8,7 @@ export type Props = {
   onChange?: () => void;
 };
 
-const CheckBox: React.VFC<Props> = (props) => {
+const CheckBox: React.VFC<Props> = memo((props) => {
   const { isCompleted = false, disabled = false, onChange } = props;
 
   return (
@@ -24,7 +25,7 @@ const CheckBox: React.VFC<Props> = (props) => {
       </label>
     </>
   );
-};
+});
 
 export default CheckBox;
 

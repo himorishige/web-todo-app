@@ -10,8 +10,9 @@ import {
   updateTask,
 } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
+import { memo, useCallback } from 'react';
 
-const TasksList: React.VFC = () => {
+const TasksList: React.VFC = memo(() => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const starState = useAppSelector(selectStarStatus);
@@ -20,32 +21,38 @@ const TasksList: React.VFC = () => {
   const { showToast } = useToast();
 
   // 完了フラグの管理
-  const completedStateHandler = async (id: string, isCompleted: boolean) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        isCompleted: isCompleted,
-      }),
-    );
+  const completedStateHandler = useCallback(
+    async (id: string, isCompleted: boolean) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          isCompleted: isCompleted,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '完了フラグの更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '完了フラグの更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
   // 優先度フラグの管理
-  const priorityStateHandler = async (id: string, priority: number) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        priority: priority,
-      }),
-    );
+  const priorityStateHandler = useCallback(
+    async (id: string, priority: number) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          priority: priority,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '優先度の更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '優先度の更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
   if (status === 'failed') {
     return (
@@ -114,7 +121,7 @@ const TasksList: React.VFC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default TasksList;
 

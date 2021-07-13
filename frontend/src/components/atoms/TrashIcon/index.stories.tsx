@@ -10,4 +10,3 @@ export default {
 const Template: ComponentStory<typeof TrashIcon> = (args) => <TrashIcon {...args} />;
 
 export const Default = Template.bind({});
-Default.storyName = 'PriorityButton';

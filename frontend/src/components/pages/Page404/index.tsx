@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { Message } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
 
-type Props = {};
-
-const Page404: React.VFC<Props> = () => {
+const Page404: React.VFC = memo(() => {
   return (
     <Layout>
       <div css={wrapperStyle}>
@@ -17,7 +16,7 @@ const Page404: React.VFC<Props> = () => {
       </div>
     </Layout>
   );
-};
+});
 
 export default Page404;
 

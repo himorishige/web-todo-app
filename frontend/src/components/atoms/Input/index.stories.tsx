@@ -9,9 +9,12 @@ export default {
 
 const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
 
-export const Primary = Template.bind({});
-Primary.storyName = 'Primary';
-Primary.args = {
+export const Default = Template.bind({});
+Default.storyName = 'Default';
+Default.args = {
   placeholder: 'タスクを入力してください',
   disabled: false,
+  label: 'taskName',
+  //@ts-ignore
+  register: () => {},
 };

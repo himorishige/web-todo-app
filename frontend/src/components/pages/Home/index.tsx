@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { Spinner } from 'src/components/atoms';
@@ -7,7 +7,7 @@ import { TasksList } from 'src/components/organisms';
 import { Layout } from 'src/components/templates';
 import { fetchAllTasks, selectStatus } from 'src/features/tasks/tasksSlice';
 
-const Home: React.VFC = () => {
+const Home: React.VFC = memo(() => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
 
@@ -39,7 +39,7 @@ const Home: React.VFC = () => {
       </div>
     </Layout>
   );
-};
+});
 
 export default Home;
 

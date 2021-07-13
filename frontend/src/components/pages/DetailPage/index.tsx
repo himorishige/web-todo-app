@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextArea, TrashIcon } from 'src/components/atoms';
 import { Message, TaskItem } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
-import tasksSlice, {
+import {
   fetchAllTasks,
   removeTask,
   selectStatus,
@@ -15,9 +15,10 @@ import tasksSlice, {
 } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { memo } from 'react';
 
-type Props = RouteComponentProps & {
+type Props = {
   match: {
     params: {
       id: string;
@@ -29,80 +30,96 @@ type Inputs = {
   taskMemo: string;
 };
 
-const DetailPage: React.VFC<Props> = (props) => {
-  const taskId = props.match.params.id;
+const DetailPage: React.VFC<Props> = memo((props) => {
+  const taskId = props.match?.params?.id || '404';
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
   const history = useHistory();
 
-  const { register, handleSubmit, watch } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   // 完了フラグの管理
-  const completedStateHandler = async (id: string, isCompleted: boolean) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        isCompleted: isCompleted,
-      }),
-    );
+  const completedStateHandler = useCallback(
+    async (id: string, isCompleted: boolean) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          isCompleted: isCompleted,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '完了フラグの更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '完了フラグの更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
   // 優先度フラグの管理
-  const priorityStateHandler = async (id: string, priority: number) => {
-    const result = await dispatch(
-      updateTask({
-        id: id,
-        priority: priority,
-      }),
-    );
+  const priorityStateHandler = useCallback(
+    async (id: string, priority: number) => {
+      const result = await dispatch(
+        updateTask({
+          id: id,
+          priority: priority,
+        }),
+      );
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', '優先度の更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', '優先度の更新に失敗しました');
+      }
+    },
+    [dispatch, showToast],
+  );
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const result = await dispatch(
-      updateTask({
-        id: taskId,
-        description: data.taskMemo,
-      }),
-    );
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    async (data) => {
+      const result = await dispatch(
+        updateTask({
+          id: taskId,
+          description: data.taskMemo,
+        }),
+      );
 
-    if (updateTask.fulfilled.match(result)) {
-      showToast('SUCCESS', 'メモを更新しました');
-    }
+      if (updateTask.fulfilled.match(result)) {
+        showToast('SUCCESS', 'メモを更新しました');
+      }
 
-    if (updateTask.rejected.match(result)) {
-      showToast('FAIL', 'メモの更新に失敗しました');
-    }
-  };
+      if (updateTask.rejected.match(result)) {
+        showToast('FAIL', 'メモの更新に失敗しました');
+      }
+    },
+    [dispatch, showToast, taskId],
+  );
 
-  const confirmPromise = (message: string) => {
+  const confirmPromise = useCallback((message: string) => {
     if (window.confirm(message)) {
       return Promise.resolve();
     }
     return Promise.reject();
-  };
+  }, []);
 
-  const deleteHandler = async () => {
+  const deleteHandler = useCallback(async () => {
     confirmPromise('タスクを削除してもよいですか？').then(async () => {
       await dispatch(removeTask(taskId));
 
       showToast('SUCCESS', 'タスクを削除しました');
       history.push('/');
     });
-  };
+  }, [confirmPromise, dispatch, history, showToast, taskId]);
 
   useEffect(() => {
     if (!task) {
-      dispatch(fetchAllTasks());
+      const fetch = async () => {
+        const result = await dispatch(fetchAllTasks());
+
+        if (fetchAllTasks.rejected.match(result)) {
+          showToast('FAIL', 'タスクの取得に失敗しました');
+        }
+      };
+      fetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -150,7 +167,7 @@ const DetailPage: React.VFC<Props> = (props) => {
       </div>
     </Layout>
   );
-};
+});
 
 export default DetailPage;
 

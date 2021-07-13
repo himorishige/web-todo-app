@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { CheckBox, StarIcon } from 'src/components/atoms';
 import { BsPencilSquare } from 'react-icons/bs';
+import { memo } from 'react';
 
 type Props = {
   id: string;
@@ -14,7 +15,7 @@ type Props = {
   priorityStateHandler: (id: string, priority: number) => Promise<void>;
 };
 
-const TaskItem: React.VFC<Props> = (props) => {
+const TaskItem: React.VFC<Props> = memo((props) => {
   const {
     id,
     title,
@@ -44,7 +45,7 @@ const TaskItem: React.VFC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default TaskItem;
 
