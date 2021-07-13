@@ -16,11 +16,11 @@ const Home: React.VFC = memo(() => {
       const result = await dispatch(fetchAllTasks());
 
       if (fetchAllTasks.fulfilled.match(result)) {
-        console.log('useEffect Updated');
+        // console.log('useEffect Updated');
       }
 
       if (fetchAllTasks.rejected.match(result)) {
-        console.log('useEffect not updated');
+        // console.log('useEffect not updated');
       }
     };
     init();
