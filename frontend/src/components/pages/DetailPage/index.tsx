@@ -94,7 +94,7 @@ const DetailPage: React.VFC<Props> = memo((props) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout pageTitle={`${task?.title}`}>
       <div css={wrapperStyle}>
         {task ? (
           <form onSubmit={handleSubmit(onSubmit)}>

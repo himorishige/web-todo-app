@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import tasksReducer from '../../../features/tasks/tasksSlice';
-
+import { HelmetProvider } from 'react-helmet-async';
 import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
 import { BrowserRouter } from 'react-router-dom';
@@ -61,9 +61,11 @@ describe('HomePage', () => {
   test('APIから出力されたタスクが2件表示される', async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
@@ -77,9 +79,11 @@ describe('HomePage', () => {
     );
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
@@ -98,9 +102,11 @@ describe('HomePage', () => {
     );
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);

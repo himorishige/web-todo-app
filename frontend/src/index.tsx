@@ -8,14 +8,17 @@ import * as serviceWorker from 'src/serviceWorker';
 import 'sanitize.css';
 import { globalStyle } from 'src/styles/globalStyle';
 import { ToastProvider } from './hooks/useToast';
+import { HelmetProvider } from 'react-helmet-async';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Global styles={globalStyle} />
-      <ToastProvider>
-        <App />
-      </ToastProvider>
+      <HelmetProvider>
+        <Global styles={globalStyle} />
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </HelmetProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),

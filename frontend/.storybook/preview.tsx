@@ -1,12 +1,13 @@
+import 'sanitize.css';
 import { Global } from '@emotion/react';
 import { Story } from '@storybook/react';
 import { ToastProvider } from '../src/hooks/useToast';
 import { BrowserRouter } from 'react-router-dom';
-import 'sanitize.css';
 import { globalStyle } from '../src/styles/globalStyle';
 import { Provider } from 'react-redux';
 import { store } from '../src/app/store';
 import { addDecorator } from '@storybook/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { initializeWorker, mswDecorator } from 'msw-storybook-addon';
 
 initializeWorker();
@@ -33,10 +34,12 @@ export const decorators = [
   (StoryFn: Story) => (
     <BrowserRouter>
       <Provider store={store}>
-        <Global styles={globalStyle} />
-        <ToastProvider>
-          <StoryFn />
-        </ToastProvider>
+        <HelmetProvider>
+          <Global styles={globalStyle} />
+          <ToastProvider>
+            <StoryFn />
+          </ToastProvider>
+        </HelmetProvider>
       </Provider>
     </BrowserRouter>
   ),

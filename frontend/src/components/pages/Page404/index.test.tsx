@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import { store } from 'src/app/store';
+import { HelmetProvider } from 'react-helmet-async';
 import Page404 from '.';
 
 describe('pages/Page404', () => {
@@ -10,9 +11,11 @@ describe('pages/Page404', () => {
     const target = renderer
       .create(
         <Provider store={store}>
-          <BrowserRouter>
-            <Page404 />
-          </BrowserRouter>
+          <HelmetProvider>
+            <BrowserRouter>
+              <Page404 />
+            </BrowserRouter>
+          </HelmetProvider>
         </Provider>,
       )
       .toJSON();
