@@ -6,10 +6,30 @@ WIP...
 
 React.js
 
+```bash:.env
+SKIP_PREFLIGHT_CHECK=true # Storybook用
+REACT_APP_API_URL=ADD_API_ENDPOINT_URL # APIエンドポイントURL
+REACT_APP_API_KEY=ADD_API_KEY # API KEY（現在未使用）
+```
+
 ```bash
 $ cd frontend
 $ yarn install
 $ yarn start
+```
+
+## Storybook
+
+```bash
+$ cd frontend
+$ yarn storybook
+```
+
+## Test
+
+```bash
+$ cd frontend
+$ yarn test
 ```
 
 # バックエンド
@@ -54,7 +74,7 @@ $ npm run build && sls offline start
 
 ### API用ドキュメント
 
-APIの情報についてはデプロイ後に発行されるエンドポイント`+/dev/api`で確認できます。  
+APIの情報についてはデプロイ後に発行されるエンドポイント`+/dev/api`でSwaggerドキュメントが確認できます。  
 
 - オンライン
 `https://${APIエンドポイント}/dev/api`
