@@ -9,7 +9,7 @@ React.js
 ```bash:.env
 SKIP_PREFLIGHT_CHECK=true # Storybook用
 REACT_APP_API_URL=ADD_API_ENDPOINT_URL # APIエンドポイントURL ex) https://${APIエンドポイント}/dev/v1/tasks
-REACT_APP_API_KEY=ADD_API_KEY # API KEY（現在未使用）
+REACT_APP_API_KEY=ADD_API_KEY # API KEY
 ```
 
 ```bash
