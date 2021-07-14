@@ -9,6 +9,9 @@ import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
 import { BrowserRouter } from 'react-router-dom';
 import { API_URL } from 'src/constants';
+import { ToastProvider } from 'src/hooks/useToast';
+
+const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -56,6 +59,18 @@ describe('HomePage', () => {
       },
     });
   });
+  test('正しくレンダリングされている', () => {
+    const target = render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(target).toMatchSnapshot();
+  });
   test('APIから出力されたタスクが2件表示される', async () => {
     render(
       <Provider store={store}>
@@ -91,7 +106,7 @@ describe('HomePage', () => {
     server.use(
       rest.get(API_URL, (req, res, ctx) => {
         return res(
-          ctx.status(400),
+          ctx.status(403),
           ctx.json({
             error: 'error',
           }),
@@ -102,7 +117,9 @@ describe('HomePage', () => {
       <Provider store={store}>
         <HelmetProvider>
           <BrowserRouter>
-            <Home />
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
           </BrowserRouter>
         </HelmetProvider>
       </Provider>,

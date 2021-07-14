@@ -1,7 +1,7 @@
 import tasksReducer, { TasksState, toggleFilter } from './tasksSlice';
 
 describe('tasksSlice/Reducer', () => {
-  test('初期値が正しく反映されている', () => {
+  test('初期値が正しく反映されている', async () => {
     expect(tasksReducer(undefined, { type: 'unknown' })).toEqual({
       entities: {
         entities: {},

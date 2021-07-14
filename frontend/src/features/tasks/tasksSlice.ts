@@ -22,10 +22,10 @@ export interface TasksState extends EntityState<Task> {
 
 // LocalStorageからタスクリストを復元
 let tasksInitialStateFromStorage = tasksAdapter.getInitialState();
-const _tasksInitialStateFromStorage = window.localStorage.getItem('tasksList');
-if (_tasksInitialStateFromStorage) {
-  tasksInitialStateFromStorage = JSON.parse(_tasksInitialStateFromStorage);
-}
+// const _tasksInitialStateFromStorage = window.localStorage.getItem('tasksList');
+// if (_tasksInitialStateFromStorage) {
+//   tasksInitialStateFromStorage = JSON.parse(_tasksInitialStateFromStorage);
+// }
 
 const tasksInitialEntityState: TasksState = tasksAdapter.getInitialState({
   entities: tasksInitialStateFromStorage,
@@ -127,7 +127,7 @@ export const tasksSlice = createSlice({
         state.status = 'idle';
         tasksAdapter.setAll(state, action.payload.data);
         // タスクリストをLocalStorageに保存
-        window.localStorage.setItem('tasksList', JSON.stringify(state.entities));
+        // window.localStorage.setItem('tasksList', JSON.stringify(state.entities));
       })
       .addCase(fetchAllTasks.rejected, (state, action) => {
         state.status = 'failed';

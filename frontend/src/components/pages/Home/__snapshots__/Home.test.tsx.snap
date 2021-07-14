@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pages/Page404 正しくレンダリングされている 1`] = `
+exports[`HomePage 正しくレンダリングされている 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -87,39 +87,89 @@ Object {
           class="css-1yvttm9-Layout"
         >
           <div
-            class="css-29olxo"
+            class="css-4pg0u1-Home"
           >
             <div
-              class="css-1no44b2-Message"
+              class="css-e7d0e4-Home"
             >
-              <svg
-                fill="currentColor"
-                height="1em"
-                stroke="currentColor"
-                stroke-width="0"
-                viewBox="0 0 16 16"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
-                  fill-rule="evenodd"
-                />
-                <path
-                  d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"
-                />
-                <circle
-                  cx="8"
-                  cy="4.5"
-                  r="1"
-                />
-              </svg>
-              <p>
-                404 Page Not Found...
-                <br />
-                ページが見つかりませんでした。
-              </p>
+              <div>
+                <div
+                  aria-busy="true"
+                  class=""
+                >
+                  <svg
+                    aria-label="audio-loading"
+                    height="100"
+                    viewBox="0 0 38 38"
+                    width="100"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <lineargradient
+                        id="a"
+                        x1="8.042%"
+                        x2="65.682%"
+                        y1="0%"
+                        y2="23.865%"
+                      >
+                        <stop
+                          offset="0%"
+                          stop-color="#5e454b"
+                          stop-opacity="0"
+                        />
+                        <stop
+                          offset="63.146%"
+                          stop-color="#5e454b"
+                          stop-opacity=".631"
+                        />
+                        <stop
+                          offset="100%"
+                          stop-color="#5e454b"
+                        />
+                      </lineargradient>
+                    </defs>
+                    <g
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        transform="translate(1 1)"
+                      >
+                        <path
+                          d="M36 18c0-9.94-8.06-18-18-18"
+                          id="Oval-2"
+                          stroke="#5e454b"
+                          stroke-width="2"
+                        >
+                          <animatetransform
+                            attributeName="transform"
+                            dur="0.9s"
+                            from="0 18 18"
+                            repeatCount="indefinite"
+                            to="360 18 18"
+                            type="rotate"
+                          />
+                        </path>
+                        <circle
+                          cx="36"
+                          cy="18"
+                          fill="#fff"
+                          r="1"
+                        >
+                          <animatetransform
+                            attributeName="transform"
+                            dur="0.9s"
+                            from="0 18 18"
+                            repeatCount="indefinite"
+                            to="360 18 18"
+                            type="rotate"
+                          />
+                        </circle>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </main>
@@ -138,6 +188,7 @@ Object {
                 >
                   <input
                     class="css-5x3p9d"
+                    disabled=""
                     maxlength="40"
                     name="taskName"
                     placeholder="新しいタスクを入力してください"
@@ -245,39 +296,89 @@ Object {
         class="css-1yvttm9-Layout"
       >
         <div
-          class="css-29olxo"
+          class="css-4pg0u1-Home"
         >
           <div
-            class="css-1no44b2-Message"
+            class="css-e7d0e4-Home"
           >
-            <svg
-              fill="currentColor"
-              height="1em"
-              stroke="currentColor"
-              stroke-width="0"
-              viewBox="0 0 16 16"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                clip-rule="evenodd"
-                d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"
-                fill-rule="evenodd"
-              />
-              <path
-                d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"
-              />
-              <circle
-                cx="8"
-                cy="4.5"
-                r="1"
-              />
-            </svg>
-            <p>
-              404 Page Not Found...
-              <br />
-              ページが見つかりませんでした。
-            </p>
+            <div>
+              <div
+                aria-busy="true"
+                class=""
+              >
+                <svg
+                  aria-label="audio-loading"
+                  height="100"
+                  viewBox="0 0 38 38"
+                  width="100"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <lineargradient
+                      id="a"
+                      x1="8.042%"
+                      x2="65.682%"
+                      y1="0%"
+                      y2="23.865%"
+                    >
+                      <stop
+                        offset="0%"
+                        stop-color="#5e454b"
+                        stop-opacity="0"
+                      />
+                      <stop
+                        offset="63.146%"
+                        stop-color="#5e454b"
+                        stop-opacity=".631"
+                      />
+                      <stop
+                        offset="100%"
+                        stop-color="#5e454b"
+                      />
+                    </lineargradient>
+                  </defs>
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <g
+                      transform="translate(1 1)"
+                    >
+                      <path
+                        d="M36 18c0-9.94-8.06-18-18-18"
+                        id="Oval-2"
+                        stroke="#5e454b"
+                        stroke-width="2"
+                      >
+                        <animatetransform
+                          attributeName="transform"
+                          dur="0.9s"
+                          from="0 18 18"
+                          repeatCount="indefinite"
+                          to="360 18 18"
+                          type="rotate"
+                        />
+                      </path>
+                      <circle
+                        cx="36"
+                        cy="18"
+                        fill="#fff"
+                        r="1"
+                      >
+                        <animatetransform
+                          attributeName="transform"
+                          dur="0.9s"
+                          from="0 18 18"
+                          repeatCount="indefinite"
+                          to="360 18 18"
+                          type="rotate"
+                        />
+                      </circle>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </main>
@@ -296,6 +397,7 @@ Object {
               >
                 <input
                   class="css-5x3p9d"
+                  disabled=""
                   maxlength="40"
                   name="taskName"
                   placeholder="新しいタスクを入力してください"
