@@ -1,6 +1,12 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
 import { ApiResponseType, Task } from 'src/types';
-import tasksReducer, { createTask, fetchAllTasks, removeTask, updateTask } from './tasksSlice';
+import tasksReducer, {
+  createTask,
+  fetchAllTasks,
+  removeTask,
+  TasksState,
+  updateTask,
+} from './tasksSlice';
 
 describe('tasksSlice/ExtraReducer', () => {
   const mockData: ApiResponseType<Task[]> = {
@@ -45,15 +51,20 @@ describe('tasksSlice/ExtraReducer', () => {
     sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt),
   });
 
-  const initialState = tasksAdapter.getInitialState({
+  let initialState: TasksState = {
+    entities: {},
+    ids: [],
     status: 'idle',
     message: '',
     filter: false,
-  });
+  };
 
   test('初期値が正しく反映されている', () => {
     expect(tasksReducer(undefined, { type: 'unknown' })).toEqual({
-      entities: {},
+      entities: {
+        entities: {},
+        ids: [],
+      },
       ids: [],
       status: 'idle',
       message: '',
