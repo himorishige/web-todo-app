@@ -36,6 +36,7 @@ const TextArea: React.VFC<Props> = memo(
         disabled={disabled}
         maxLength={maxLength}
         defaultValue={defaultValue}
+        data-testid="tasks-textarea"
       />
     );
   },

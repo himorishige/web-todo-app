@@ -10,11 +10,11 @@ import {
   updateTask,
 } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { sortBy } from 'lodash';
 import { Task } from 'src/types';
 
-const TasksList: React.VFC = memo(() => {
+const TasksList: React.VFC = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const starState = useAppSelector(selectStarStatus);
@@ -31,7 +31,7 @@ const TasksList: React.VFC = memo(() => {
 
   useEffect(() => {
     sortFunction();
-  }, [sortFunction]);
+  }, [sortFunction, tasks]);
 
   // 完了フラグの管理
   const completedStateHandler = useCallback(
@@ -77,64 +77,60 @@ const TasksList: React.VFC = memo(() => {
     );
   }
 
-  if (sortData.length && starState) {
-    return (
-      <div data-testid="tasks-area">
-        {sortData.filter((task) => task.priority === 1).length ? (
-          tasks
-            .filter((task) => task.priority === 1)
-            .map((task) => (
-              <div key={task.id} css={taskItemStyle} data-testid="task-item">
-                <TaskItem
-                  id={task.id}
-                  title={task.title}
-                  description={task.description}
-                  isCompleted={task.isCompleted}
-                  priority={task.priority}
-                  completedStateHandler={completedStateHandler}
-                  priorityStateHandler={priorityStateHandler}
-                />
-              </div>
-            ))
-        ) : (
-          <div data-testid="tasks-area">
-            <div css={message} data-testid="tasks-error">
-              <Message>登録されているお気に入りのタスクはありません</Message>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (sortData.length && !starState) {
-    return (
-      <div data-testid="tasks-area">
-        {sortData.map((task) => (
-          <div key={task.id} css={taskItemStyle} data-testid="task-item">
-            <TaskItem
-              id={task.id}
-              title={task.title}
-              description={task.description}
-              isCompleted={task.isCompleted}
-              priority={task.priority}
-              completedStateHandler={completedStateHandler}
-              priorityStateHandler={priorityStateHandler}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
   return (
-    <div data-testid="tasks-area">
-      <div css={message} data-testid="tasks-error">
-        <Message>登録されているタスクはありません</Message>
-      </div>
-    </div>
+    <>
+      {tasks && starState ? (
+        <div data-testid="tasks-area">
+          {sortData.filter((task) => task.priority === 1).length ? (
+            tasks
+              .filter((task) => task.priority === 1)
+              .map((task) => (
+                <div key={task.id} css={taskItemStyle} data-testid="task-item">
+                  <TaskItem
+                    id={task.id}
+                    title={task.title}
+                    description={task.description}
+                    isCompleted={task.isCompleted}
+                    priority={task.priority}
+                    completedStateHandler={completedStateHandler}
+                    priorityStateHandler={priorityStateHandler}
+                  />
+                </div>
+              ))
+          ) : (
+            <div data-testid="tasks-area">
+              <div css={message} data-testid="tasks-error">
+                <Message>登録されているお気に入りのタスクはありません</Message>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : tasks.length ? (
+        <div data-testid="tasks-area">
+          {sortData.map((task) => (
+            <div key={task.id} css={taskItemStyle} data-testid="task-item">
+              <TaskItem
+                id={task.id}
+                title={task.title}
+                description={task.description}
+                isCompleted={task.isCompleted}
+                priority={task.priority}
+                completedStateHandler={completedStateHandler}
+                priorityStateHandler={priorityStateHandler}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div data-testid="tasks-area">
+          <div css={message} data-testid="tasks-error">
+            <Message>登録されているタスクはありません</Message>
+          </div>
+        </div>
+      )}
+    </>
   );
-});
+};
 
 export default TasksList;
 

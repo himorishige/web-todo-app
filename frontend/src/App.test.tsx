@@ -5,6 +5,7 @@ import { store } from './app/store';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { ToastProvider } from './hooks/useToast';
 
 describe('App', () => {
   describe('#Rendering', () => {
@@ -13,15 +14,17 @@ describe('App', () => {
         <Provider store={store}>
           <HelmetProvider>
             <BrowserRouter>
-              <App />
+              <ToastProvider>
+                <App />
+              </ToastProvider>
             </BrowserRouter>
           </HelmetProvider>
         </Provider>,
       );
     });
 
-    test('アプリケーションのタイトルが表示されている', () => {
-      expect(screen.getByRole('heading')).toHaveTextContent('ToDo App');
+    test('アプリケーションのタイトルが表示されている', async () => {
+      expect(await screen.findByRole('heading')).toHaveTextContent('ToDo App');
     });
   });
 });
