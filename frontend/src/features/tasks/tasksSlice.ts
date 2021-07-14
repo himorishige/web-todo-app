@@ -10,7 +10,7 @@ import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
   selectId: (task) => task.id,
-  sortComparer: (a, b) => b.createdAt.localeCompare(a.createdAt),
+  sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt),
 });
 
 export interface TasksState {
