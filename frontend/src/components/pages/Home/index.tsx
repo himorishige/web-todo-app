@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import React, { memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { Spinner } from 'src/components/atoms';
 import { TasksList } from 'src/components/organisms';
 import { Layout } from 'src/components/templates';
-import { fetchAllTasks, selectStatus } from 'src/features/tasks/tasksSlice';
+import { fetchAllTasks, selectStatus, selectTasks } from 'src/features/tasks/tasksSlice';
 
-const Home: React.VFC = memo(() => {
+const Home: React.VFC = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
+  const tasks = useAppSelector(selectTasks.selectAll);
 
   useEffect(() => {
     const init = async () => {
@@ -29,7 +30,7 @@ const Home: React.VFC = memo(() => {
   return (
     <Layout pageTitle="タスク一覧">
       <div css={wrapperStyle}>
-        {status === 'loading' ? (
+        {status === 'loading' && !tasks.length ? (
           <div css={loadingStyle}>
             <Spinner />
           </div>
@@ -39,7 +40,7 @@ const Home: React.VFC = memo(() => {
       </div>
     </Layout>
   );
-});
+};
 
 export default Home;
 

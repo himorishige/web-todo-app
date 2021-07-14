@@ -16,7 +16,6 @@ import {
 import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
 import { useCallback, useEffect } from 'react';
-import { memo } from 'react';
 
 type Props = {
   match: {
@@ -31,7 +30,7 @@ type Inputs = {
   taskMemo: string;
 };
 
-const DetailPage: React.VFC<Props> = memo((props) => {
+const DetailPage: React.VFC<Props> = (props) => {
   const taskId = props.match?.params?.id || '404';
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
@@ -62,23 +61,16 @@ const DetailPage: React.VFC<Props> = memo((props) => {
     [dispatch, showToast, taskId],
   );
 
-  const confirmPromise = useCallback((message: string) => {
-    if (window.confirm(message)) {
-      return Promise.resolve();
-    }
-    return Promise.reject();
-  }, []);
-
   const deleteHandler = useCallback(async () => {
-    confirmPromise('タスクを削除してもよいですか？').then(async () => {
+    if (window.confirm('タスクを削除してもよいですか？')) {
       await dispatch(removeTask(taskId));
 
       showToast('SUCCESS', 'タスクを削除しました');
       history.push('/');
-    });
-  }, [confirmPromise, dispatch, history, showToast, taskId]);
+    }
+  }, [dispatch, history, showToast, taskId]);
 
-  // TODO 直接詳細ページに訪れた場合、リロードした場合の処理（LocalStorage対応に変更するか検討？）
+  // 直接詳細ページに訪れた場合、リロードした場合の処理
   useEffect(() => {
     if (!task) {
       const fetch = async () => {
@@ -121,7 +113,7 @@ const DetailPage: React.VFC<Props> = memo((props) => {
               <div>更新：{format(new Date(task.updatedAt), 'yyyy/MM/dd HH:mm')}</div>
             </div>
             <div css={controlWrapper}>
-              <div onClick={deleteHandler}>
+              <div onClick={deleteHandler} data-testid="tasks-delete">
                 <TrashIcon />
               </div>
               <div>
@@ -137,7 +129,7 @@ const DetailPage: React.VFC<Props> = memo((props) => {
       </div>
     </Layout>
   );
-});
+};
 
 export default DetailPage;
 

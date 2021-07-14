@@ -87,14 +87,14 @@ Object {
           class="css-1yvttm9-Layout"
         >
           <div
-            class="css-14973vb"
+            class="css-1mvr9yd-DetailPage"
           >
             <div
-              class="css-0"
+              class="css-xn4eiv-DetailPage"
               data-testid="tasks-error"
             >
               <div
-                class="css-1no44b2-Message"
+                class="css-1sbdpyj"
               >
                 <svg
                   fill="currentColor"
@@ -249,14 +249,14 @@ Object {
         class="css-1yvttm9-Layout"
       >
         <div
-          class="css-14973vb"
+          class="css-1mvr9yd-DetailPage"
         >
           <div
-            class="css-0"
+            class="css-xn4eiv-DetailPage"
             data-testid="tasks-error"
           >
             <div
-              class="css-1no44b2-Message"
+              class="css-1sbdpyj"
             >
               <svg
                 fill="currentColor"
