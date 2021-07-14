@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Button, TextArea, TrashIcon } from 'src/components/atoms';
-import { Message, TaskItem } from 'src/components/molecules';
+import { Button, Input, TextArea, TrashIcon } from 'src/components/atoms';
+import { Message } from 'src/components/molecules';
 import { Layout } from 'src/components/templates';
 import {
   fetchAllTasks,
@@ -27,6 +27,7 @@ type Props = {
 };
 
 type Inputs = {
+  taskName: string;
   taskMemo: string;
 };
 
@@ -40,55 +41,22 @@ const DetailPage: React.VFC<Props> = memo((props) => {
 
   const { register, handleSubmit } = useForm<Inputs>();
 
-  // 完了フラグの管理
-  const completedStateHandler = useCallback(
-    async (id: string, isCompleted: boolean) => {
-      const result = await dispatch(
-        updateTask({
-          id: id,
-          isCompleted: isCompleted,
-        }),
-      );
-
-      if (updateTask.rejected.match(result)) {
-        showToast('FAIL', '完了フラグの更新に失敗しました');
-      }
-    },
-    [dispatch, showToast],
-  );
-
-  // 優先度フラグの管理
-  const priorityStateHandler = useCallback(
-    async (id: string, priority: number) => {
-      const result = await dispatch(
-        updateTask({
-          id: id,
-          priority: priority,
-        }),
-      );
-
-      if (updateTask.rejected.match(result)) {
-        showToast('FAIL', '優先度の更新に失敗しました');
-      }
-    },
-    [dispatch, showToast],
-  );
-
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     async (data) => {
       const result = await dispatch(
         updateTask({
           id: taskId,
+          title: data.taskName,
           description: data.taskMemo,
         }),
       );
 
       if (updateTask.fulfilled.match(result)) {
-        showToast('SUCCESS', 'メモを更新しました');
+        showToast('SUCCESS', 'タスクを更新しました');
       }
 
       if (updateTask.rejected.match(result)) {
-        showToast('FAIL', 'メモの更新に失敗しました');
+        showToast('FAIL', 'タスクの更新に失敗しました');
       }
     },
     [dispatch, showToast, taskId],
@@ -110,6 +78,7 @@ const DetailPage: React.VFC<Props> = memo((props) => {
     });
   }, [confirmPromise, dispatch, history, showToast, taskId]);
 
+  // TODO 直接詳細ページに訪れた場合、リロードした場合の処理（LocalStorage対応に変更するか検討？）
   useEffect(() => {
     if (!task) {
       const fetch = async () => {
@@ -129,15 +98,16 @@ const DetailPage: React.VFC<Props> = memo((props) => {
       <div css={wrapperStyle}>
         {task ? (
           <form onSubmit={handleSubmit(onSubmit)}>
-            <TaskItem
-              id={task.id}
-              title={task.title}
-              description={task.description}
-              isCompleted={task.isCompleted}
-              priority={task.priority}
-              completedStateHandler={completedStateHandler}
-              priorityStateHandler={priorityStateHandler}
-            />
+            <div>
+              <Input
+                label="taskName"
+                placeholder="タスクを入力してください"
+                defaultValue={task.title}
+                register={register}
+                required
+                disabled={status === 'loading'}
+              />
+            </div>
             <div css={textAreaWrapper}>
               <TextArea
                 label="taskMemo"
@@ -155,7 +125,7 @@ const DetailPage: React.VFC<Props> = memo((props) => {
                 <TrashIcon />
               </div>
               <div>
-                <Button primary label="メモを更新" disabled={status === 'loading'} />
+                <Button primary label="タスクを更新" disabled={status === 'loading'} />
               </div>
             </div>
           </form>
