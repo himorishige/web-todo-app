@@ -5,9 +5,8 @@ import {
   EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { RootState } from 'src/app/store';
-import { API_URL } from 'src/constants';
+import { axiosInstance } from 'src/lib/axios';
 import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
@@ -39,7 +38,7 @@ const tasksInitialEntityState: TasksState = tasksAdapter.getInitialState({
 export const fetchAllTasks = createAsyncThunk(
   'tasks/fetchAllTasks',
   async (_, { rejectWithValue }) => {
-    const response = await axios.get<ApiResponseType<Task[]>>(API_URL).catch((error) => {
+    const response = await axiosInstance.get<ApiResponseType<Task[]>>('').catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -54,7 +53,7 @@ export const createTask = createAsyncThunk(
     param: Pick<Task, 'title' | 'description' | 'priority' | 'isCompleted'>,
     { rejectWithValue },
   ) => {
-    const response = await axios.post<ApiResponseType<Task>>(`${API_URL}`, param).catch((error) => {
+    const response = await axiosInstance.post<ApiResponseType<Task>>('', param).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -72,8 +71,8 @@ export const updateTask = createAsyncThunk(
     >,
     { rejectWithValue },
   ) => {
-    const response = await axios
-      .patch<ApiResponseType<Task>>(`${API_URL}/${param.id}`, param)
+    const response = await axiosInstance
+      .patch<ApiResponseType<Task>>(`/${param.id}`, param)
       .catch((error) => {
         rejectWithValue(error);
         throw error;
@@ -86,8 +85,8 @@ export const updateTask = createAsyncThunk(
 export const removeTask = createAsyncThunk(
   'task/removeTask',
   async (id: string, { rejectWithValue }) => {
-    const response = await axios
-      .delete<ApiResponseType<string>>(`${API_URL}/${id}`)
+    const response = await axiosInstance
+      .delete<ApiResponseType<string>>(`/${id}`)
       .catch((error) => {
         rejectWithValue(error);
         throw error;
