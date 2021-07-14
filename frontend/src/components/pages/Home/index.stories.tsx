@@ -3,8 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Home from '.';
 import { rest } from 'msw';
 import { ApiResponseType, Task } from 'src/types';
-
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from 'src/constants';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -41,7 +40,7 @@ export const Default = Template.bind({});
 Default.storyName = 'Default';
 Default.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.json(mockData));
     }),
   ],
@@ -51,7 +50,7 @@ export const NoData = Template.bind({});
 NoData.storyName = 'No Data';
 NoData.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.json({ status: 'ok', data: [] }));
     }),
   ],
@@ -61,7 +60,7 @@ export const NetWorkError = Template.bind({});
 NetWorkError.storyName = 'NetWorkError';
 NetWorkError.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.status(400), ctx.json({ error: 'error' }));
     }),
   ],

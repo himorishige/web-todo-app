@@ -8,9 +8,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
 import { BrowserRouter } from 'react-router-dom';
-
-// APIエンドポイント
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from 'src/constants';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -37,7 +35,7 @@ const mockData: ApiResponseType<Task[]> = {
 };
 
 const server = setupServer(
-  rest.get(URL, (req, res, ctx) => {
+  rest.get(API_URL, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockData));
   }),
 );
@@ -73,7 +71,7 @@ describe('HomePage', () => {
   });
   test('ネットワークエラーの時にエラーメッセージが表示される', async () => {
     server.use(
-      rest.get(URL, (req, res, ctx) => {
+      rest.get(API_URL, (req, res, ctx) => {
         return res(ctx.status(404));
       }),
     );
@@ -91,7 +89,7 @@ describe('HomePage', () => {
   });
   test('API拒否時にエラーが表示される', async () => {
     server.use(
-      rest.get(URL, (req, res, ctx) => {
+      rest.get(API_URL, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({

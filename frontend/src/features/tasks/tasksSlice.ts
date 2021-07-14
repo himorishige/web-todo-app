@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from 'src/app/store';
+import { API_URL } from 'src/constants';
 import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
@@ -20,14 +21,11 @@ export interface TasksState {
   filter: boolean;
 }
 
-// APIエンドポイント
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-
 // Taskを全件取得する
 export const fetchAllTasks = createAsyncThunk(
   'tasks/fetchAllTasks',
   async (_, { rejectWithValue }) => {
-    const response = await axios.get<ApiResponseType<Task[]>>(URL).catch((error) => {
+    const response = await axios.get<ApiResponseType<Task[]>>(API_URL).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -42,7 +40,7 @@ export const createTask = createAsyncThunk(
     param: Pick<Task, 'title' | 'description' | 'priority' | 'isCompleted'>,
     { rejectWithValue },
   ) => {
-    const response = await axios.post<ApiResponseType<Task>>(`${URL}`, param).catch((error) => {
+    const response = await axios.post<ApiResponseType<Task>>(`${API_URL}`, param).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -61,7 +59,7 @@ export const updateTask = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const response = await axios
-      .patch<ApiResponseType<Task>>(`${URL}/${param.id}`, param)
+      .patch<ApiResponseType<Task>>(`${API_URL}/${param.id}`, param)
       .catch((error) => {
         rejectWithValue(error);
         throw error;
@@ -74,10 +72,12 @@ export const updateTask = createAsyncThunk(
 export const removeTask = createAsyncThunk(
   'task/removeTask',
   async (id: string, { rejectWithValue }) => {
-    const response = await axios.delete<ApiResponseType<string>>(`${URL}/${id}`).catch((error) => {
-      rejectWithValue(error);
-      throw error;
-    });
+    const response = await axios
+      .delete<ApiResponseType<string>>(`${API_URL}/${id}`)
+      .catch((error) => {
+        rejectWithValue(error);
+        throw error;
+      });
     return response.data;
   },
 );
