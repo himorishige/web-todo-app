@@ -15,6 +15,18 @@ provider:
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
+    apiKeys:
+      - todoUser:
+          - ${opt:stage, self:provider.stage}-todoUser-key
+    usagePlan:
+      - todoUser:
+          quota:
+            limit: 1000
+            offset: 0
+            period: MONTH
+          throttle:
+            rateLimit: 100
+            burstLimit: 100
   environment:
     TASKS_TABLE_NAME: ${self:custom.tasksTable.name}
     DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
@@ -38,10 +50,11 @@ functions:
           cors: true
           path: '/'
           method: any
+          private: true
       - http:
-          cors: true
           path: '{proxy+}'
           method: any
+          private: true
 
 custom:
   dynamodb:

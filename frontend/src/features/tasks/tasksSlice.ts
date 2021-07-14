@@ -2,11 +2,11 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
+  EntityState,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { RootState } from 'src/app/store';
-import { API_URL } from 'src/constants';
+import { axiosInstance } from 'src/lib/axios';
 import { ApiResponseType, Task, WithOptional } from 'src/types';
 
 const tasksAdapter = createEntityAdapter<Task>({
@@ -14,18 +14,31 @@ const tasksAdapter = createEntityAdapter<Task>({
   sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt),
 });
 
-export interface TasksState {
-  tasks: Task[] | null;
+export interface TasksState extends EntityState<Task> {
   status: 'idle' | 'loading' | 'failed';
   message?: string;
   filter: boolean;
 }
 
+// LocalStorageからタスクリストを復元
+let tasksInitialStateFromStorage = tasksAdapter.getInitialState();
+const _tasksInitialStateFromStorage = window.localStorage.getItem('tasksList');
+if (_tasksInitialStateFromStorage) {
+  tasksInitialStateFromStorage = JSON.parse(_tasksInitialStateFromStorage);
+}
+
+const tasksInitialEntityState: TasksState = tasksAdapter.getInitialState({
+  entities: tasksInitialStateFromStorage,
+  status: 'idle',
+  message: '',
+  filter: false,
+});
+
 // Taskを全件取得する
 export const fetchAllTasks = createAsyncThunk(
   'tasks/fetchAllTasks',
   async (_, { rejectWithValue }) => {
-    const response = await axios.get<ApiResponseType<Task[]>>(API_URL).catch((error) => {
+    const response = await axiosInstance.get<ApiResponseType<Task[]>>('').catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -40,7 +53,7 @@ export const createTask = createAsyncThunk(
     param: Pick<Task, 'title' | 'description' | 'priority' | 'isCompleted'>,
     { rejectWithValue },
   ) => {
-    const response = await axios.post<ApiResponseType<Task>>(`${API_URL}`, param).catch((error) => {
+    const response = await axiosInstance.post<ApiResponseType<Task>>('', param).catch((error) => {
       rejectWithValue(error);
       throw error;
     });
@@ -58,8 +71,8 @@ export const updateTask = createAsyncThunk(
     >,
     { rejectWithValue },
   ) => {
-    const response = await axios
-      .patch<ApiResponseType<Task>>(`${API_URL}/${param.id}`, param)
+    const response = await axiosInstance
+      .patch<ApiResponseType<Task>>(`/${param.id}`, param)
       .catch((error) => {
         rejectWithValue(error);
         throw error;
@@ -72,8 +85,8 @@ export const updateTask = createAsyncThunk(
 export const removeTask = createAsyncThunk(
   'task/removeTask',
   async (id: string, { rejectWithValue }) => {
-    const response = await axios
-      .delete<ApiResponseType<string>>(`${API_URL}/${id}`)
+    const response = await axiosInstance
+      .delete<ApiResponseType<string>>(`/${id}`)
       .catch((error) => {
         rejectWithValue(error);
         throw error;
@@ -84,11 +97,7 @@ export const removeTask = createAsyncThunk(
 
 export const tasksSlice = createSlice({
   name: 'tasks',
-  initialState: tasksAdapter.getInitialState({
-    status: 'idle',
-    message: '',
-    filter: false,
-  }),
+  initialState: tasksInitialEntityState,
   reducers: {
     toggleFilter: (state) => {
       state.filter = !state.filter;
@@ -117,6 +126,8 @@ export const tasksSlice = createSlice({
       .addCase(fetchAllTasks.fulfilled, (state, action: PayloadAction<ApiResponseType<Task[]>>) => {
         state.status = 'idle';
         tasksAdapter.setAll(state, action.payload.data);
+        // タスクリストをLocalStorageに保存
+        window.localStorage.setItem('tasksList', JSON.stringify(state.entities));
       })
       .addCase(fetchAllTasks.rejected, (state, action) => {
         state.status = 'failed';
