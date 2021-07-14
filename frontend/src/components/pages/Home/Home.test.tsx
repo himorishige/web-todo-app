@@ -4,13 +4,11 @@ import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import tasksReducer from '../../../features/tasks/tasksSlice';
-
+import { HelmetProvider } from 'react-helmet-async';
 import { Home } from 'src/components/pages';
 import { ApiResponseType, Task } from 'src/types';
 import { BrowserRouter } from 'react-router-dom';
-
-// APIエンドポイント
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from 'src/constants';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -37,7 +35,7 @@ const mockData: ApiResponseType<Task[]> = {
 };
 
 const server = setupServer(
-  rest.get(URL, (req, res, ctx) => {
+  rest.get(API_URL, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockData));
   }),
 );
@@ -61,9 +59,11 @@ describe('HomePage', () => {
   test('APIから出力されたタスクが2件表示される', async () => {
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
@@ -71,15 +71,17 @@ describe('HomePage', () => {
   });
   test('ネットワークエラーの時にエラーメッセージが表示される', async () => {
     server.use(
-      rest.get(URL, (req, res, ctx) => {
+      rest.get(API_URL, (req, res, ctx) => {
         return res(ctx.status(404));
       }),
     );
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
@@ -87,7 +89,7 @@ describe('HomePage', () => {
   });
   test('API拒否時にエラーが表示される', async () => {
     server.use(
-      rest.get(URL, (req, res, ctx) => {
+      rest.get(API_URL, (req, res, ctx) => {
         return res(
           ctx.status(400),
           ctx.json({
@@ -98,9 +100,11 @@ describe('HomePage', () => {
     );
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Home />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>,
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);

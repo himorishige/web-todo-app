@@ -10,7 +10,9 @@ import {
   updateTask,
 } from 'src/features/tasks/tasksSlice';
 import { useToast } from 'src/hooks/useToast';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { sortBy } from 'lodash';
+import { Task } from 'src/types';
 
 const TasksList: React.VFC = memo(() => {
   const dispatch = useAppDispatch();
@@ -19,6 +21,17 @@ const TasksList: React.VFC = memo(() => {
   const errorMessage = useAppSelector(selectErrorMessage);
   const tasks = useAppSelector(selectTasks.selectAll);
   const { showToast } = useToast();
+  const [sortData, setSortData] = useState<Task[]>([]);
+
+  // 未完了のタスクを優先し、作成日が古いもの順で並び替える
+  const sortFunction = useCallback(() => {
+    const sortData = sortBy(tasks, ['isCompleted', 'createdAt']);
+    setSortData(sortData);
+  }, [tasks]);
+
+  useEffect(() => {
+    sortFunction();
+  }, [sortFunction]);
 
   // 完了フラグの管理
   const completedStateHandler = useCallback(
@@ -64,10 +77,10 @@ const TasksList: React.VFC = memo(() => {
     );
   }
 
-  if (tasks.length && starState) {
+  if (sortData.length && starState) {
     return (
       <div data-testid="tasks-area">
-        {tasks.filter((task) => task.priority === 1).length ? (
+        {sortData.filter((task) => task.priority === 1).length ? (
           tasks
             .filter((task) => task.priority === 1)
             .map((task) => (
@@ -94,10 +107,10 @@ const TasksList: React.VFC = memo(() => {
     );
   }
 
-  if (tasks.length && !starState) {
+  if (sortData.length && !starState) {
     return (
       <div data-testid="tasks-area">
-        {tasks.map((task) => (
+        {sortData.map((task) => (
           <div key={task.id} css={taskItemStyle} data-testid="task-item">
             <TaskItem
               id={task.id}

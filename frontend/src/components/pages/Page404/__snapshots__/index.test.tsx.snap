@@ -158,7 +158,7 @@ exports[`pages/Page404 正しくレンダリングされている 1`] = `
               name="taskName"
               onBlur={[Function]}
               onChange={[Function]}
-              placeholder="タスクを入力してください"
+              placeholder="新しいタスクを入力してください"
               type="text"
             />
           </div>

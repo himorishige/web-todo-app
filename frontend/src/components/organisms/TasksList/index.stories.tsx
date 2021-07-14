@@ -8,8 +8,7 @@ import { useEffect } from 'react';
 import { fetchAllTasks } from 'src/features/tasks/tasksSlice';
 import { rest } from 'msw';
 import { ApiResponseType, Task } from 'src/types';
-
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from 'src/constants';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -54,7 +53,7 @@ Default.storyName = 'Default';
 Default.args = {};
 Default.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.json(mockData));
     }),
   ],
@@ -65,7 +64,7 @@ NoData.storyName = 'NoData';
 NoData.args = {};
 NoData.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.json({ status: 'ok', data: [] }));
     }),
   ],
@@ -75,7 +74,7 @@ export const NetWorkError = Template.bind({});
 NetWorkError.storyName = 'NetWorkError';
 NetWorkError.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.status(400), ctx.json({ error: 'error' }));
     }),
   ],

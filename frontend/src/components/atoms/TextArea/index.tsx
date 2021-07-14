@@ -14,6 +14,7 @@ export type Props = {
 };
 
 type Inputs = {
+  taskName: string;
   taskMemo: string;
 };
 
@@ -47,8 +48,7 @@ const textAreaStyle = css`
   height: 100%;
   min-height: 30vh;
   padding: 1rem;
-  /* border: 2px solid var(--primary-color); */
-  border: none;
+  border: 2px solid var(--primary-color);
   border-radius: 4px;
   color: var(--primary-color);
   &:disabled {

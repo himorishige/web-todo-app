@@ -13,6 +13,7 @@ type Props = {};
 
 type Inputs = {
   taskName: string;
+  taskMemo: string;
 };
 
 const Footer: React.VFC<Props> = memo(() => {
@@ -58,7 +59,7 @@ const Footer: React.VFC<Props> = memo(() => {
           <div css={inputWrapper}>
             <Input
               label="taskName"
-              placeholder="タスクを入力してください"
+              placeholder="新しいタスクを入力してください"
               register={register}
               required
               disabled={status === 'loading'}

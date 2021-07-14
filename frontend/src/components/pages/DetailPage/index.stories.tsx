@@ -3,8 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import DetailPage from '.';
 import { rest } from 'msw';
 import { ApiResponseType, Task } from 'src/types';
-
-const URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from 'src/constants';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -48,7 +47,7 @@ Default.args = {
 };
 Default.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.json(mockData));
     }),
   ],
@@ -75,7 +74,7 @@ NetWorkError.args = {
 };
 NetWorkError.parameters = {
   msw: [
-    rest.get(URL, (req, res, ctx) => {
+    rest.get(API_URL, (req, res, ctx) => {
       return res(ctx.status(400), ctx.json({ error: 'error' }));
     }),
   ],

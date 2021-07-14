@@ -4,15 +4,18 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 describe('App', () => {
   describe('#Rendering', () => {
     beforeEach(() => {
       render(
         <Provider store={store}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <HelmetProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </HelmetProvider>
         </Provider>,
       );
     });

@@ -6,7 +6,7 @@ import { Layout } from 'src/components/templates';
 
 const Page404: React.VFC = memo(() => {
   return (
-    <Layout>
+    <Layout pageTitle="ページが見つかりませんでした">
       <div css={wrapperStyle}>
         <Message>
           404 Page Not Found...

@@ -5,10 +5,12 @@ import { Path, UseFormRegister } from 'react-hook-form';
 
 type Inputs = {
   taskName: string;
+  taskMemo: string;
 };
 
 export type Props = {
   placeholder: string;
+  defaultValue?: string;
   disabled?: boolean;
   maxLength?: number;
   label: Path<Inputs>;
@@ -19,6 +21,7 @@ export type Props = {
 const Input: React.VFC<Props> = memo(
   ({
     placeholder,
+    defaultValue,
     disabled = false,
     maxLength = 40,
     label,
@@ -31,6 +34,7 @@ const Input: React.VFC<Props> = memo(
         type="text"
         css={inputStyle}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         disabled={disabled}
         maxLength={maxLength}
         {...register(label, { required })}

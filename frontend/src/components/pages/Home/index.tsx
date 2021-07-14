@@ -27,7 +27,7 @@ const Home: React.VFC = memo(() => {
   }, [dispatch]);
 
   return (
-    <Layout>
+    <Layout pageTitle="タスク一覧">
       <div css={wrapperStyle}>
         {status === 'loading' ? (
           <div css={loadingStyle}>

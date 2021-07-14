@@ -1,14 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Header, Footer } from 'src/components/organisms';
+import { Helmet } from 'react-helmet-async';
+import { SITE_NAME } from 'src/constants';
 
 type Props = {
+  pageTitle?: string;
   children: React.ReactNode;
 };
 
-const Layout: React.VFC<Props> = ({ children }) => {
+const Layout: React.VFC<Props> = ({ pageTitle = 'No Title', children }) => {
   return (
     <div>
+      <Helmet>
+        <title>
+          {pageTitle} | {SITE_NAME}
+        </title>
+      </Helmet>
       <Header />
       <main css={contentsStyle}>{children}</main>
       <footer css={footerStyle}>
