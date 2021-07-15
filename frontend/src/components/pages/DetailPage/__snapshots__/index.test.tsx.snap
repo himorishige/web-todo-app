@@ -59,6 +59,7 @@ Object {
             </h1>
             <div
               class="css-knz8lr"
+              data-testid="toggle-button"
             >
               <div
                 class="css-kknodv"
@@ -221,6 +222,7 @@ Object {
           </h1>
           <div
             class="css-knz8lr"
+            data-testid="toggle-button"
           >
             <div
               class="css-kknodv"

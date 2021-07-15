@@ -20,7 +20,7 @@ const Header: React.VFC<Props> = memo(() => {
       <div css={innerStyle}>
         <HomeIcon />
         <h1 css={headingStyle}>ToDo App</h1>
-        <div css={starToggleStyle} onClick={toggleHandler}>
+        <div css={starToggleStyle} onClick={toggleHandler} data-testid="toggle-button">
           <StarIcon status={+starState} />
         </div>
       </div>

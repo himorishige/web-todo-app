@@ -21,7 +21,7 @@ const CheckBox: React.VFC<Props> = memo((props) => {
           defaultChecked={isCompleted}
           onChange={onChange}
         />
-        <span className="dummy-input"></span>
+        <span className="dummy-input" data-testid="checkbutton"></span>
       </label>
     </>
   );
