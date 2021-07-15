@@ -35,7 +35,7 @@ const mockData: ApiResponseType<Task[]> = {
   ],
 };
 
-const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
+// const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
 
 const mockCallWindow = jest.fn(() => true);
 window.confirm = mockCallWindow;
