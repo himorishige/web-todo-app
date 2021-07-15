@@ -171,6 +171,9 @@ describe('pages/DetailPage', () => {
           }),
         );
       }),
+      rest.options(`${API_URL}/${props.params.id}`, (req, res, ctx) => {
+        return res(ctx.status(200));
+      }),
     );
     render(
       <Provider store={store}>
@@ -196,6 +199,11 @@ describe('pages/DetailPage', () => {
     };
     server.use(
       rest.patch(`${API_URL}/${props.params.id}`, (req, res, ctx) => {
+        return res(ctx.status(403));
+      }),
+    );
+    server.use(
+      rest.options(`${API_URL}/${props.params.id}`, (req, res, ctx) => {
         return res(ctx.status(403));
       }),
     );
