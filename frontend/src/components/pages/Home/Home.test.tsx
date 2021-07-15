@@ -11,8 +11,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { API_URL } from 'src/constants';
 import { ToastProvider } from 'src/hooks/useToast';
 
-const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
-
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
   data: [

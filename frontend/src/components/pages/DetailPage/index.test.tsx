@@ -34,6 +34,9 @@ const mockData: ApiResponseType<Task[]> = {
     },
   ],
 };
+
+const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
+
 const mockCallWindow = jest.fn(() => true);
 window.confirm = mockCallWindow;
 
@@ -185,6 +188,33 @@ describe('pages/DetailPage', () => {
     expect(await screen.findByTestId('tasks-textarea')).toHaveValue('メグミルク');
   });
 
+  test('タスクを更新ボタンでエラーの場合', async () => {
+    const props = {
+      params: {
+        id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
+      },
+    };
+    server.use(
+      rest.patch(`${API_URL}/${props.params.id}`, (req, res, ctx) => {
+        return res(ctx.status(403));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <DetailPage match={props} />
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+
+    expect(await screen.findByTestId('tasks-textarea')).toHaveValue('');
+    userEvent.type(await screen.findByTestId('tasks-textarea'), 'メグミルク');
+    userEvent.click(await screen.findByText('タスクを更新'));
+    expect(await screen.findByTestId('tasks-textarea')).toHaveValue('メグミルク');
+  });
+
   test('タスクを削除ボタンで削除ができる', async () => {
     const props = {
       params: {
@@ -223,6 +253,7 @@ describe('pages/DetailPage', () => {
 
     userEvent.click(await screen.findByTestId('tasks-delete'));
     expect(mockCallWindow).toHaveBeenCalledWith('タスクを削除してもよいですか？');
-    // expect(mockHistoryPush).toHaveBeenCalledWith('/');
+    // await sleep(1000);
+    // expect(mockHistoryPush).toHaveBeenCalled();
   });
 });

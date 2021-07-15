@@ -5,8 +5,11 @@ import { css, keyframes } from '@emotion/react';
 type TOAST_TYPE = 'SUCCESS' | 'FAIL';
 
 const ToastContext = React.createContext({
-  showToast: (toastType: TOAST_TYPE, message: string) => {
-    console.log(message);
+  showToast: (toastType: TOAST_TYPE, message: string) => {},
+  state: {
+    show: false,
+    message: 'message',
+    toastType: 'SUCCESS',
   },
 });
 
@@ -28,9 +31,11 @@ export const ToastProvider: React.VFC<Props> = (props) => {
 
   return (
     <>
-      <ToastContext.Provider value={{ showToast }}>{props.children}</ToastContext.Provider>
+      <ToastContext.Provider value={{ showToast, state }}>{props.children}</ToastContext.Provider>
       {state.show && (
-        <div css={[toastStyle, state.toastType === 'FAIL' && failStyle]}>{state.message}</div>
+        <div data-testid="toast" css={[toastStyle, state.toastType === 'FAIL' && failStyle]}>
+          {state.message}
+        </div>
       )}
     </>
   );
