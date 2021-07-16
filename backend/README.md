@@ -1,3 +1,5 @@
+# ToDo App Backend
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
@@ -10,6 +12,7 @@
 ## インストール
 
 ```bash
+$ cd backend
 $ yarn install
 # or
 $ npm install
@@ -21,15 +24,18 @@ $ npm install
 [serverless framework](https://www.serverless.com/)を利用しているためAWSアカウントと紐付けたservelesss frameworkを利用できる環境が必要となります。
 
 ```bash
-$ yarn build && serverless deploy
+$ yarn build && sls deploy
 # or
-$ npm run build && serverless deploy
+$ npm run build && sls deploy
 ```
+
+デプロイ後に表示されるエンドポイントとAPI KEYをフロントエンドで利用します。
 
 ### オフラインでの起動
 
 ```bash
 $ serverless dynamodb install # 初回のみ
+
 $ yarn build && sls offline start
 # or
 $ npm run build && sls offline start
@@ -37,7 +43,7 @@ $ npm run build && sls offline start
 
 ### API用ドキュメント
 
-APIの情報についてはデプロイ後に発行されるエンドポイント`+/dev/api`で確認できます。  
+APIの情報についてはデプロイ後に発行されるエンドポイント`+/dev/api`でSwaggerドキュメントが確認できます。  
 
 - オンライン
 `https://${APIエンドポイント}/dev/api`
