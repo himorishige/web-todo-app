@@ -49,12 +49,41 @@ functions:
       - http:
           cors: true
           path: '/'
-          method: any
+          method: post
           private: true
       - http:
-          path: '{proxy+}'
-          method: any
+          cors: true
+          path: '/'
+          method: delete
           private: true
+      - http:
+          cors: true
+          path: '/'
+          method: patch
+          private: true
+      - http:
+          cors: true
+          path: '/'
+          method: get
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: post
+          private: true
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: delete
+          private: true
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: patch
+          private: true
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: get
 
 custom:
   dynamodb:
