@@ -116,26 +116,6 @@ describe('HomePage', () => {
     expect(await screen.findAllByTestId('task-item')).toHaveLength(1);
   });
 
-  test('完了フラグをつけた時に順番が入れ替わる', async () => {
-    render(
-      <Provider store={store}>
-        <HelmetProvider>
-          <BrowserRouter>
-            <Home />
-          </BrowserRouter>
-        </HelmetProvider>
-      </Provider>,
-    );
-    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
-    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
-    const target = await screen.findAllByTestId('task-item');
-    expect(target[0]).toHaveTextContent('牛乳を買ってくる');
-    const check = await screen.findAllByTestId('checkbutton');
-    userEvent.click(check[0]);
-    const nextTarget = await screen.findAllByTestId('task-item');
-    expect(nextTarget[0]).toHaveTextContent('牛乳を買ってくる');
-  });
-
   test('ネットワークエラーの時にエラーメッセージが表示される', async () => {
     server.use(
       rest.get(API_URL, (req, res, ctx) => {
