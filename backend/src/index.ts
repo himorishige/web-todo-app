@@ -12,7 +12,7 @@ let cachedServer: Server;
 
 const setupSwagger = (app: INestApplication) => {
   const options = new DocumentBuilder()
-    .setTitle('Web App ToDo')
+    .setTitle('ToDo Application API')
     .setDescription('The API documentation for the ToDo app')
     .setVersion('1.0')
     .build();
