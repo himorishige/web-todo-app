@@ -148,6 +148,7 @@ describe('tasksSlice/ExtraReducer', () => {
         data: {
           createdAt: '2021-07-10T08:52:01.696Z',
           priority: 0,
+          description: '',
           id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
           updatedAt: '2021-07-10T08:52:01.696Z',
           title: '卵を買ってくる',
