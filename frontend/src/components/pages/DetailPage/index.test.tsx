@@ -11,7 +11,7 @@ import { setupServer } from 'msw/node';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
-
+declare const global: any;
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
   data: [
@@ -38,8 +38,12 @@ const mockData: ApiResponseType<Task[]> = {
 
 const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
 
-const mockCallWindow = jest.fn(() => true);
-window.confirm = mockCallWindow;
+// beforeEach(() => {
+//   global.window = {};
+// });
+// const mockCallWindow = jest.fn(() => true);
+// window.confirm = mockCallWindow;
+// jest.spyOn(global, 'confirm' as any).mockReturnValueOnce(true);
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -54,13 +58,20 @@ const server = setupServer(
     return res(ctx.status(200), ctx.json(mockData));
   }),
 );
-
-beforeAll(() => server.listen());
+let confirmSpy: any;
+beforeAll(() => {
+  confirmSpy = jest.spyOn(window, 'confirm');
+  confirmSpy.mockImplementation(jest.fn(() => true));
+  server.listen();
+});
 afterEach(() => {
   server.resetHandlers();
   cleanup();
 });
-afterAll(() => server.close());
+afterAll(() => {
+  server.close();
+  confirmSpy.mockRestore();
+});
 
 describe('pages/DetailPage', () => {
   test('正しくレンダリングされている', () => {
@@ -240,15 +251,7 @@ describe('pages/DetailPage', () => {
           ctx.status(200),
           ctx.json({
             status: 'ok',
-            data: {
-              createdAt: '2021-07-10T08:52:01.696Z',
-              priority: 0,
-              id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
-              description: '',
-              updatedAt: '2021-07-10T08:52:01.696Z',
-              title: '卵を買ってくる',
-              isCompleted: false,
-            },
+            data: 'Successfully removed.',
           }),
         );
       }),
@@ -264,11 +267,43 @@ describe('pages/DetailPage', () => {
       </Provider>,
     );
 
+    window.confirm = jest.fn().mockImplementation(() => true);
     await act(async () => {
       userEvent.click(await screen.findByTestId('tasks-delete'));
     });
-    expect(mockCallWindow).toHaveBeenCalledWith('タスクを削除してもよいですか？');
+    expect(window.confirm).toHaveBeenCalledWith('タスクを削除してもよいですか？');
     await sleep(1000);
-    // expect(mockHistoryPush).toHaveBeenCalled();
+    expect(mockHistoryPush).toHaveBeenCalled();
+  });
+
+  test('タスクを削除ボタンでネットワークエラーの場合', async () => {
+    const props = {
+      params: {
+        id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
+      },
+    };
+    server.use(
+      rest.delete(`${API_URL}/${props.params.id}`, (req, res, ctx) => {
+        return res(ctx.status(403));
+      }),
+    );
+
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <MemoryRouter>
+            <DetailPage match={props} />
+          </MemoryRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+
+    window.confirm = jest.fn().mockImplementation(() => true);
+    await act(async () => {
+      userEvent.click(await screen.findByTestId('tasks-delete'));
+    });
+    expect(window.confirm).toHaveBeenCalledWith('タスクを削除してもよいですか？');
+    await sleep(1000);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
   });
 });

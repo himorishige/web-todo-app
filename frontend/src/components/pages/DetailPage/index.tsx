@@ -65,10 +65,16 @@ const DetailPage: React.VFC<Props> = (props) => {
   // タスク削除ボタンの制御
   const deleteHandler = useCallback(async () => {
     if (window.confirm('タスクを削除してもよいですか？')) {
-      await dispatch(removeTask(taskId));
+      const result = await dispatch(removeTask(taskId));
 
-      showToast('SUCCESS', 'タスクを削除しました');
-      history.push('/');
+      if (removeTask.fulfilled.match(result)) {
+        showToast('SUCCESS', 'タスクを削除しました');
+        history.push('/');
+      }
+
+      if (removeTask.rejected.match(result)) {
+        showToast('FAIL', 'タスクの削除に失敗しました');
+      }
     }
   }, [dispatch, history, showToast, taskId]);
 
