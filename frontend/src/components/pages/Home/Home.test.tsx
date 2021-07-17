@@ -1,16 +1,18 @@
 import { render, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import tasksReducer from '../../../features/tasks/tasksSlice';
+import tasksReducer from 'src/features/tasks/tasksSlice';
+import { ToastProvider } from 'src/hooks/useToast';
 import { HelmetProvider } from 'react-helmet-async';
 import { Home } from 'src/components/pages';
+
 import { ApiResponseType, Task } from 'src/types';
-import { BrowserRouter } from 'react-router-dom';
 import { API_URL } from 'src/constants';
-import { ToastProvider } from 'src/hooks/useToast';
-import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -34,6 +36,19 @@ const mockData: ApiResponseType<Task[]> = {
       title: '牛乳を買ってくる',
     },
   ],
+};
+
+const singleMockData: ApiResponseType<Task> = {
+  status: 'ok',
+  data: {
+    createdAt: '2021-07-10T08:52:01.696Z',
+    priority: 0,
+    id: 'bbeff447-6b94-402d-8961-7ab44e9f6fc0',
+    description: '',
+    updatedAt: '2021-07-10T08:52:01.696Z',
+    title: 'メグミルクを買ってくる',
+    isCompleted: false,
+  },
 };
 
 const server = setupServer(
@@ -100,7 +115,7 @@ describe('HomePage', () => {
     expect(target[0]).toHaveTextContent('牛乳を買ってくる');
   });
 
-  test('お気に入りタスクにフィルターした時に正しくフィルターされたタスクが表示される', async () => {
+  test('お気に入りタスクでフィルターした時にはお気に入りタスクだけが表示される', async () => {
     render(
       <Provider store={store}>
         <HelmetProvider>
@@ -112,7 +127,9 @@ describe('HomePage', () => {
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
     expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
-    userEvent.click(await screen.findByTestId('toggle-button'));
+    await act(async () => {
+      userEvent.click(await screen.findByTestId('toggle-button'));
+    });
     expect(await screen.findAllByTestId('task-item')).toHaveLength(1);
   });
 
@@ -158,5 +175,73 @@ describe('HomePage', () => {
     );
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
     expect(await screen.findByTestId('tasks-net-error')).toBeTruthy();
+  });
+
+  test('タスクを追加する際にネットワークエラーの場合エラーメッセージが表示される', async () => {
+    server.use(
+      rest.get(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData));
+      }),
+      rest.post(API_URL, (req, res, ctx) => {
+        return res(
+          ctx.status(403),
+          ctx.json({
+            error: 'error',
+          }),
+        );
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('input-area'), 'メグミルクを買ってくる');
+      userEvent.click(await screen.findByText('登録'));
+    });
+    expect(await screen.findByTestId('tasks-net-error')).toBeTruthy();
+  });
+
+  test('タスクを追加すると一覧に登録されたタスクが1件増える', async () => {
+    const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
+    server.use(
+      rest.get(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData));
+      }),
+      rest.post(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(singleMockData));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('input-area'), 'メグミルクを買ってくる');
+      userEvent.click(await screen.findByText('登録'));
+    });
+    await sleep(1000);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(3);
   });
 });

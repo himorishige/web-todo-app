@@ -142,6 +142,7 @@ Object {
                 >
                   <input
                     class="css-5x3p9d"
+                    data-testid="input-area"
                     disabled=""
                     maxlength="40"
                     name="taskName"
@@ -305,6 +306,7 @@ Object {
               >
                 <input
                   class="css-5x3p9d"
+                  data-testid="input-area"
                   disabled=""
                   maxlength="40"
                   name="taskName"

@@ -10,6 +10,7 @@ import { ApiResponseType, Task } from 'src/types';
 import { setupServer } from 'msw/node';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -35,7 +36,7 @@ const mockData: ApiResponseType<Task[]> = {
   ],
 };
 
-// const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
+const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
 
 const mockCallWindow = jest.fn(() => true);
 window.confirm = mockCallWindow;
@@ -186,8 +187,10 @@ describe('pages/DetailPage', () => {
     );
 
     expect(await screen.findByTestId('tasks-textarea')).toHaveValue('');
-    userEvent.type(await screen.findByTestId('tasks-textarea'), 'メグミルク');
-    userEvent.click(await screen.findByText('タスクを更新'));
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('tasks-textarea'), 'メグミルク');
+      userEvent.click(await screen.findByText('タスクを更新'));
+    });
     expect(await screen.findByTestId('tasks-textarea')).toHaveValue('メグミルク');
   });
 
@@ -218,8 +221,10 @@ describe('pages/DetailPage', () => {
     );
 
     expect(await screen.findByTestId('tasks-textarea')).toHaveValue('');
-    userEvent.type(await screen.findByTestId('tasks-textarea'), 'メグミルク');
-    userEvent.click(await screen.findByText('タスクを更新'));
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('tasks-textarea'), 'メグミルク');
+      userEvent.click(await screen.findByText('タスクを更新'));
+    });
     expect(await screen.findByTestId('tasks-textarea')).toHaveValue('メグミルク');
   });
 
@@ -259,9 +264,11 @@ describe('pages/DetailPage', () => {
       </Provider>,
     );
 
-    userEvent.click(await screen.findByTestId('tasks-delete'));
+    await act(async () => {
+      userEvent.click(await screen.findByTestId('tasks-delete'));
+    });
     expect(mockCallWindow).toHaveBeenCalledWith('タスクを削除してもよいですか？');
-    // await sleep(1000);
+    await sleep(1000);
     // expect(mockHistoryPush).toHaveBeenCalled();
   });
 });

@@ -59,7 +59,7 @@ describe('tasksSlice/ExtraReducer', () => {
     filter: false,
   };
 
-  test('初期値が正しく反映されている', () => {
+  test('Storeの初期値が正しく反映されている', () => {
     expect(tasksReducer(undefined, { type: 'unknown' })).toEqual({
       entities: {
         entities: {},
@@ -73,13 +73,13 @@ describe('tasksSlice/ExtraReducer', () => {
   });
 
   describe('tasksSlice/createTask', () => {
-    test('取得開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
+    test('タスクの作成時にはローディング中になり、エラーメッセージがクリアされる', async () => {
       const action = { type: createTask.pending.type };
       const state = tasksReducer(initialState, action);
       expect(state.status).toEqual('loading');
       expect(state.message).toBeFalsy();
     });
-    test('取得成功時、取得したデータが入っている', async () => {
+    test('タスクの作成成功時、作成したしたデータが返ってくる', async () => {
       const action = { type: createTask.fulfilled.type, payload: singleMockData };
       const state = tasksReducer(initialState, action);
       const title = tasksAdapter.getSelectors().selectById(state, singleMockData.data.id)?.title;
@@ -87,7 +87,7 @@ describe('tasksSlice/ExtraReducer', () => {
       expect(state.ids).toHaveLength(1);
       expect(title).toBe('テスト卵を買ってくる');
     });
-    test('取得失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
+    test('タスクの作成失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
       const action = {
         type: createTask.rejected.type,
         error: { message: 'error' },
@@ -99,14 +99,14 @@ describe('tasksSlice/ExtraReducer', () => {
   });
 
   describe('tasksSlice/fetchAllTasks', () => {
-    test('取得開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
+    test('タスクの取得開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
       const action = { type: fetchAllTasks.pending.type };
       const state = tasksReducer(initialState, action);
       expect(state.status).toEqual('loading');
       expect(state.message).toBeFalsy();
     });
 
-    test('取得成功時、取得したデータが正しい件数入っている', async () => {
+    test('タスクの取得成功時、取得したデータが正しい件数入っている', async () => {
       const action = { type: fetchAllTasks.fulfilled.type, payload: mockData };
       const state = tasksReducer(initialState, action);
       const target = tasksAdapter.getSelectors().selectById(state, mockData.data[0].id)?.id;
@@ -115,7 +115,7 @@ describe('tasksSlice/ExtraReducer', () => {
       expect(target).toBe('bbeff447-6b94-402d-8961-7ab44e9f6fc7');
     });
 
-    test('取得失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
+    test('タスクの取得失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
       const action = {
         type: fetchAllTasks.rejected.type,
         error: { message: 'error' },
@@ -135,14 +135,14 @@ describe('tasksSlice/ExtraReducer', () => {
       state = tasksReducer(initialState, action);
     });
 
-    test('開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
+    test('タスクの更新時にはローディング中になり、エラーメッセージがクリアされる', async () => {
       action = { type: updateTask.pending.type };
       state = tasksReducer(state, action);
       expect(state.status).toEqual('loading');
       expect(state.message).toBeFalsy();
     });
 
-    test('更新成功時、更新したデータが正しく更新されている', async () => {
+    test('タスクの更新成功時、更新したデータが正しく更新されている', async () => {
       const updateData: ApiResponseType<Task> = {
         status: 'ok',
         data: {
@@ -161,7 +161,7 @@ describe('tasksSlice/ExtraReducer', () => {
       expect(target).toBeTruthy();
     });
 
-    test('取得失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
+    test('タスクの更新失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
       const action = {
         type: updateTask.rejected.type,
         error: { message: 'error' },
@@ -181,14 +181,14 @@ describe('tasksSlice/ExtraReducer', () => {
       state = tasksReducer(initialState, action);
     });
 
-    test('開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
+    test('タスクの削除開始時にはローディング中になり、エラーメッセージがクリアされる', async () => {
       action = { type: removeTask.pending.type };
       state = tasksReducer(state, action);
       expect(state.status).toEqual('loading');
       expect(state.message).toBeFalsy();
     });
 
-    test('削除成功時、更新したデータが削除されている', async () => {
+    test('タスクの削除成功時、更新したデータが削除されている', async () => {
       const removeData: ApiResponseType<string> = {
         status: 'ok',
         data: 'bbeff447-6b94-402d-8961-7ab44e9f6fc7',
@@ -201,7 +201,7 @@ describe('tasksSlice/ExtraReducer', () => {
       expect(target).toBeUndefined();
     });
 
-    test('取得失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
+    test('タスクの削除失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
       const action = {
         type: removeTask.rejected.type,
         error: { message: 'error' },
