@@ -54,6 +54,7 @@ const TasksList: React.VFC = () => {
     [dispatch, showToast],
   );
 
+  // APIからの取得に失敗した場合
   if (status === 'failed') {
     return (
       <div data-testid="tasks-area">
@@ -64,9 +65,11 @@ const TasksList: React.VFC = () => {
     );
   }
 
+  // APIからの取得に成功した場合
   return (
     <>
       {tasks.length && starState ? (
+        // お気に入りタスクの表示
         <div data-testid="tasks-area">
           {tasks.filter((task) => task.priority === 1).length ? (
             tasks
@@ -93,6 +96,7 @@ const TasksList: React.VFC = () => {
           )}
         </div>
       ) : tasks.length ? (
+        // 登録されている全タスクの表示
         <div data-testid="tasks-area">
           {tasks.map((task) => (
             <div key={task.id} css={taskItemStyle} data-testid="task-item">

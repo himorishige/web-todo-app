@@ -18,6 +18,7 @@ Checked.args = {
   isCompleted: true,
   priority: 0,
   completedStateHandler: async () => {},
+  priorityStateHandler: async () => {},
 };
 
 export const UnChecked = Template.bind({});
@@ -29,4 +30,5 @@ UnChecked.args = {
   isCompleted: false,
   priority: 0,
   completedStateHandler: async () => {},
+  priorityStateHandler: async () => {},
 };

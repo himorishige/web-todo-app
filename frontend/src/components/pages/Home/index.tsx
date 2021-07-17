@@ -12,6 +12,7 @@ const Home: React.VFC = () => {
   const status = useAppSelector(selectStatus);
   const tasks = useAppSelector(selectTasks.selectAll);
 
+  // ページ表示時にタスク一覧を取得
   useEffect(() => {
     const init = async () => {
       const result = await dispatch(fetchAllTasks());
