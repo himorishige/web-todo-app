@@ -15,6 +15,10 @@ const setupSwagger = (app: INestApplication) => {
     .setTitle('ToDo Application API')
     .setDescription('The API documentation for the ToDo app')
     .setVersion('1.0')
+    .addApiKey({
+      type: 'apiKey',
+      name: 'x-api-key',
+    })
     .build();
   const additionalOptions = {
     swaggerOptions: {
