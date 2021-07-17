@@ -139,6 +139,7 @@ Object {
                 >
                   <input
                     class="css-5x3p9d"
+                    data-testid="input-area"
                     maxlength="40"
                     name="taskName"
                     placeholder="新しいタスクを入力してください"
@@ -298,6 +299,7 @@ Object {
               >
                 <input
                   class="css-5x3p9d"
+                  data-testid="input-area"
                   maxlength="40"
                   name="taskName"
                   placeholder="新しいタスクを入力してください"

@@ -37,6 +37,7 @@ const Input: React.VFC<Props> = memo(
         defaultValue={defaultValue}
         disabled={disabled}
         maxLength={maxLength}
+        data-testid="input-area"
         {...register(label, { required })}
       />
     );

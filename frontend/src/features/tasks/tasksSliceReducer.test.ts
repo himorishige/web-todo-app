@@ -1,7 +1,7 @@
 import tasksReducer, { TasksState, toggleFilter } from './tasksSlice';
 
 describe('tasksSlice/Reducer', () => {
-  test('初期値が正しく反映されている', async () => {
+  test('Storeの初期値が正しく反映されている', async () => {
     expect(tasksReducer(undefined, { type: 'unknown' })).toEqual({
       entities: {
         entities: {},
@@ -16,7 +16,7 @@ describe('tasksSlice/Reducer', () => {
 });
 
 describe('tasksSlice/toggleFilter', () => {
-  test('フィルターのトグルが機能する', () => {
+  test('お気に入りタスクフィルターのトグルアクションでtrue/falseが切り替わる', () => {
     let initialState: TasksState = {
       entities: {},
       ids: [],
