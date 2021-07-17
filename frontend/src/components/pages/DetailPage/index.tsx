@@ -40,6 +40,7 @@ const DetailPage: React.VFC<Props> = (props) => {
 
   const { register, handleSubmit } = useForm<Inputs>();
 
+  // タスク更新ボタンの制御
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     async (data) => {
       const result = await dispatch(
@@ -61,6 +62,7 @@ const DetailPage: React.VFC<Props> = (props) => {
     [dispatch, showToast, taskId],
   );
 
+  // タスク削除ボタンの制御
   const deleteHandler = useCallback(async () => {
     if (window.confirm('タスクを削除してもよいですか？')) {
       await dispatch(removeTask(taskId));

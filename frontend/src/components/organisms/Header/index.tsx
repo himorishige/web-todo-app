@@ -11,6 +11,7 @@ const Header: React.VFC<Props> = memo(() => {
   const dispatch = useAppDispatch();
   const starState = useAppSelector(selectStarStatus);
 
+  // お気に入りリスト表示をトグルする
   const toggleHandler = useCallback(() => {
     dispatch(toggleFilter());
   }, [dispatch]);
