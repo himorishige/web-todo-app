@@ -268,6 +268,7 @@ describe('HomePage', () => {
         </HelmetProvider>
       </Provider>,
     );
+
     expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
     expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
     expect(await screen.findByTestId('input-area')).toHaveValue('');

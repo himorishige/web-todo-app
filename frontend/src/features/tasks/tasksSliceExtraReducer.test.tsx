@@ -86,6 +86,8 @@ describe('tasksSlice/ExtraReducer', () => {
       expect(state.status).toEqual('idle');
       expect(state.ids).toHaveLength(1);
       expect(title).toBe('テスト卵を買ってくる');
+      const target = tasksAdapter.getSelectors().selectById(state, singleMockData.data.id);
+      expect(target).toEqual(singleMockData.data);
     });
     test('タスクの作成失敗時にはローディングが終了し、エラーメッセージが格納される', async () => {
       const action = {
@@ -196,7 +198,7 @@ describe('tasksSlice/ExtraReducer', () => {
       };
       action = { type: removeTask.fulfilled.type, payload: removeData };
       state = tasksReducer(state, action);
-      const target = tasksAdapter.getSelectors().selectById(state, removeData.data)?.id;
+      const target = tasksAdapter.getSelectors().selectById(state, removeData.data);
       expect(state.status).toEqual('idle');
       expect(state.ids).toHaveLength(1);
       expect(target).toBeUndefined();
