@@ -4,6 +4,7 @@ import { HomeIcon, StarIcon } from 'src/components/atoms';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { selectStarStatus, toggleFilter } from 'src/features/tasks/tasksSlice';
 import { memo, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
@@ -19,7 +20,9 @@ const Header: React.VFC<Props> = memo(() => {
   return (
     <div css={titleStyle}>
       <div css={innerStyle}>
-        <HomeIcon />
+        <Link to="/">
+          <HomeIcon />
+        </Link>
         <h1 css={headingStyle}>ToDo App</h1>
         <div css={starToggleStyle} onClick={toggleHandler} data-testid="toggle-button">
           <StarIcon status={+starState} />
