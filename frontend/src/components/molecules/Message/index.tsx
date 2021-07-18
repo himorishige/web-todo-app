@@ -13,7 +13,7 @@ const Message: React.VFC<Props> = memo((props) => {
   return (
     <div css={messageWrapper}>
       <BsInfoCircle />
-      <p>{children}</p>
+      <p data-testid="info-message">{children}</p>
     </div>
   );
 });

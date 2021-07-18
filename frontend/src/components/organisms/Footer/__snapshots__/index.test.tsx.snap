@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Organisms/Footer 正しくレンダリングされている 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <div
+    className="css-1qqqf83"
+  >
+    <div
+      className="css-7d0ne1"
+    >
+      <div
+        className="css-1ago99h"
+      >
+        <input
+          className="css-5x3p9d"
+          data-testid="input-area"
+          disabled={false}
+          maxLength={40}
+          name="taskName"
+          onBlur={[Function]}
+          onChange={[Function]}
+          placeholder="新しいタスクを入力してください"
+          type="text"
+        />
+      </div>
+      <div
+        className="css-75wbz6"
+      >
+        <button
+          className="css-k3l7h4"
+          disabled={true}
+        >
+          登録
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+`;

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atoms/CheckBox 正しくレンダリングされている 1`] = `
+<label
+  className="css-dygvpw"
+>
+  <input
+    className="input"
+    defaultChecked={false}
+    disabled={false}
+    type="checkbox"
+  />
+  <span
+    className="dummy-input"
+    data-testid="checkbutton"
+  />
+</label>
+`;

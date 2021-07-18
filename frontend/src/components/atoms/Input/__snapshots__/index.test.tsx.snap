@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atoms/Input 正しくレンダリングされている 1`] = `
+<input
+  className="css-5x3p9d"
+  data-testid="input-area"
+  disabled={false}
+  maxLength={40}
+  placeholder="入力"
+  type="text"
+/>
+`;

@@ -15,11 +15,11 @@ const StarIcon: React.VFC<Props> = memo((props) => {
     <>
       {status === 1 ? (
         <div css={wrapper} onClick={onClick}>
-          <BsStarFill css={[defaultStyle, onStyle]} />
+          <BsStarFill css={[defaultStyle, onStyle]} data-testid="star" />
         </div>
       ) : (
         <div css={wrapper} onClick={onClick}>
-          <BsStar css={[defaultStyle, offStyle]} />
+          <BsStar css={[defaultStyle, offStyle]} data-testid="star" />
         </div>
       )}
     </>

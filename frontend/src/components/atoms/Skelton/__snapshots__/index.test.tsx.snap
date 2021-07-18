@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atoms/Skelton 正しくレンダリングされている 1`] = `
+<div
+  className="css-1976yk9"
+  style={
+    Object {
+      "borderRadius": "0",
+      "height": "4rem",
+      "width": "100%",
+    }
+  }
+/>
+`;
