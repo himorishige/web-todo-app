@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atoms/TextArea 正しくレンダリングされている 1`] = `
+<textarea
+  className="css-1w1700i"
+  data-testid="tasks-textarea"
+  defaultValue=""
+  disabled={false}
+  maxLength={140}
+  placeholder="入力"
+/>
+`;

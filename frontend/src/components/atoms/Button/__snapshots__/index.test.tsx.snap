@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atoms/Button 正しくレンダリングされている 1`] = `
+<button
+  className="css-qckj2w"
+  disabled={false}
+>
+  button
+</button>
+`;
