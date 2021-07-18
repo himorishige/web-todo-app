@@ -11,7 +11,7 @@ import { setupServer } from 'msw/node';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
-declare const global: any;
+
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
   data: [

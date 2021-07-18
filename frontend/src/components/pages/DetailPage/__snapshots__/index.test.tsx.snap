@@ -12,10 +12,10 @@ Object {
           <div
             class="css-1hh8z22"
           >
-            <div>
-              <a
-                href="/"
-              >
+            <a
+              href="/"
+            >
+              <div>
                 <svg
                   class="css-1443oa1"
                   fill="currentColor"
@@ -50,8 +50,8 @@ Object {
                     d="M0 2a2 2 0 012-2h12a2 2 0 012 2v2H0V2z"
                   />
                 </svg>
-              </a>
-            </div>
+              </div>
+            </a>
             <h1
               class="css-1llq2fx"
             >
@@ -66,6 +66,7 @@ Object {
               >
                 <svg
                   class="css-ba990d"
+                  data-testid="star"
                   fill="currentColor"
                   height="1em"
                   stroke="currentColor"
@@ -120,7 +121,9 @@ Object {
                     r="1"
                   />
                 </svg>
-                <p>
+                <p
+                  data-testid="info-message"
+                >
                   該当するIDのタスクはありません
                 </p>
               </div>
@@ -176,10 +179,10 @@ Object {
         <div
           class="css-1hh8z22"
         >
-          <div>
-            <a
-              href="/"
-            >
+          <a
+            href="/"
+          >
+            <div>
               <svg
                 class="css-1443oa1"
                 fill="currentColor"
@@ -214,8 +217,8 @@ Object {
                   d="M0 2a2 2 0 012-2h12a2 2 0 012 2v2H0V2z"
                 />
               </svg>
-            </a>
-          </div>
+            </div>
+          </a>
           <h1
             class="css-1llq2fx"
           >
@@ -230,6 +233,7 @@ Object {
             >
               <svg
                 class="css-ba990d"
+                data-testid="star"
                 fill="currentColor"
                 height="1em"
                 stroke="currentColor"
@@ -284,7 +288,9 @@ Object {
                   r="1"
                 />
               </svg>
-              <p>
+              <p
+                data-testid="info-message"
+              >
                 該当するIDのタスクはありません
               </p>
             </div>
