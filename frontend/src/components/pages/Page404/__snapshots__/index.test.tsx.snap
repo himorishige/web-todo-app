@@ -120,7 +120,7 @@ Object {
               <p
                 data-testid="info-message"
               >
-                404 Page Not Found...
+                404 Page Not Found.
                 <br />
                 ページが見つかりませんでした。
               </p>
@@ -283,7 +283,7 @@ Object {
             <p
               data-testid="info-message"
             >
-              404 Page Not Found...
+              404 Page Not Found.
               <br />
               ページが見つかりませんでした。
             </p>
