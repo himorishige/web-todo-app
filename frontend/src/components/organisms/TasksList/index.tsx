@@ -9,7 +9,6 @@ import {
   selectTasks,
   updateTask,
 } from 'src/features/tasks/tasksSlice';
-import { useToast } from 'src/hooks/useToast';
 import { useCallback } from 'react';
 
 const TasksList: React.VFC = () => {
@@ -18,40 +17,31 @@ const TasksList: React.VFC = () => {
   const starState = useAppSelector(selectStarStatus);
   const errorMessage = useAppSelector(selectErrorMessage);
   const tasks = useAppSelector(selectTasks.selectAll);
-  const { showToast } = useToast();
 
   // 完了フラグの管理
   const completedStateHandler = useCallback(
     async (id: string, isCompleted: boolean) => {
-      const result = await dispatch(
+      await dispatch(
         updateTask({
           id: id,
           isCompleted: isCompleted,
         }),
       );
-
-      if (updateTask.rejected.match(result)) {
-        showToast('FAIL', '完了フラグの更新に失敗しました');
-      }
     },
-    [dispatch, showToast],
+    [dispatch],
   );
 
   // 優先度フラグの管理
   const priorityStateHandler = useCallback(
     async (id: string, priority: number) => {
-      const result = await dispatch(
+      await dispatch(
         updateTask({
           id: id,
           priority: priority,
         }),
       );
-
-      if (updateTask.rejected.match(result)) {
-        showToast('FAIL', '優先度の更新に失敗しました');
-      }
     },
-    [dispatch, showToast],
+    [dispatch],
   );
 
   // APIからの取得に失敗した場合
