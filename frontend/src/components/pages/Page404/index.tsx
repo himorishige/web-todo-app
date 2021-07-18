@@ -9,7 +9,7 @@ const Page404: React.VFC = memo(() => {
     <Layout pageTitle="ページが見つかりませんでした">
       <div css={wrapperStyle}>
         <Message>
-          404 Page Not Found...
+          404 Page Not Found.
           <br />
           ページが見つかりませんでした。
         </Message>
