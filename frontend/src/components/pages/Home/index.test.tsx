@@ -9,10 +9,13 @@ import tasksReducer from 'src/features/tasks/tasksSlice';
 import { ToastProvider } from 'src/hooks/useToast';
 import { HelmetProvider } from 'react-helmet-async';
 import { Home } from 'src/components/pages';
-
+import { matchers } from '@emotion/jest';
 import { ApiResponseType, Task } from 'src/types';
 import { API_URL } from 'src/constants';
 import { act } from 'react-dom/test-utils';
+
+// Add the custom matchers provided by '@emotion/jest'
+expect.extend(matchers);
 
 const mockData: ApiResponseType<Task[]> = {
   status: 'ok',
@@ -243,5 +246,74 @@ describe('HomePage', () => {
     await sleep(1000);
     expect(await screen.findByTestId('input-area')).toHaveValue('');
     expect(await screen.findAllByTestId('task-item')).toHaveLength(3);
+  });
+
+  test('タスクのお気に入りボタンを押下すると色が変わる', async () => {
+    server.use(
+      rest.get(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData));
+      }),
+      rest.patch(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(singleMockData));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+    const target = await screen.findAllByTestId('star');
+    expect(target[0]).toHaveStyleRule('color', 'var(--primary-color)');
+    await act(async () => {
+      userEvent.click(target[0]);
+    });
+    expect(target[0]).toHaveStyleRule('color', 'var(--primary-color)');
+    await act(async () => {
+      userEvent.click(target[0]);
+    });
+    expect(target[0]).toHaveStyleRule('color', 'var(--primary-color)');
+  });
+
+  test('タスクのチェックボタンをクリックするとチェックに切り替わる', async () => {
+    server.use(
+      rest.get(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData));
+      }),
+      rest.patch(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(singleMockData));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
+    const target = await screen.findAllByTestId('checkbutton');
+    expect(target[0]).toHaveStyle('background: rgb(216, 179, 132, 0.5)');
+    await act(async () => {
+      userEvent.click(target[0]);
+    });
+    expect(target[0]).toHaveStyle('background: var(--primary-color)');
+    await act(async () => {
+      userEvent.click(target[0]);
+    });
+    expect(target[0]).toHaveStyle('background: rgb(216, 179, 132, 0.5)');
   });
 });
