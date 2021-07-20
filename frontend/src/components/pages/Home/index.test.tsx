@@ -247,6 +247,42 @@ describe('HomePage', () => {
     expect(await screen.findByTestId('input-area')).toHaveValue('');
     expect(await screen.findAllByTestId('task-item')).toHaveLength(3);
   });
+  test('タスクを追加を続けて登録することができる', async () => {
+    const sleep = (value: number) => new Promise((resolve) => setTimeout(resolve, value));
+    server.use(
+      rest.get(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(mockData));
+      }),
+      rest.post(API_URL, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(singleMockData));
+      }),
+    );
+    render(
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ToastProvider>
+              <Home />
+            </ToastProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>,
+    );
+    expect(screen.queryAllByTestId('tasks-item')).toHaveLength(0);
+    expect(await screen.findAllByTestId('task-item')).toHaveLength(2);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('input-area'), 'メグミルクを買ってくる');
+      userEvent.click(await screen.findByText('登録'));
+    });
+    await sleep(1000);
+    await act(async () => {
+      userEvent.type(await screen.findByTestId('input-area'), 'いいちこを買ってくる');
+      userEvent.click(await screen.findByText('登録'));
+    });
+    await sleep(1000);
+    expect(await screen.findByTestId('input-area')).toHaveValue('');
+  });
 
   test('タスクのお気に入りボタンを押下すると色が変わる', async () => {
     server.use(
