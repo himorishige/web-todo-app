@@ -2,7 +2,7 @@
 
 exports[`Atoms/Input 正しくレンダリングされている 1`] = `
 <input
-  className="css-5x3p9d"
+  className="css-1gxkf0o-Input"
   data-testid="input-area"
   disabled={false}
   maxLength={40}

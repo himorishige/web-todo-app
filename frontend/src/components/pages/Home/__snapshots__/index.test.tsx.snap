@@ -189,7 +189,7 @@ Object {
                   class="css-1ago99h"
                 >
                   <input
-                    class="css-5x3p9d"
+                    class="css-1gxkf0o-Input"
                     data-testid="input-area"
                     disabled=""
                     maxlength="40"
@@ -401,7 +401,7 @@ Object {
                 class="css-1ago99h"
               >
                 <input
-                  class="css-5x3p9d"
+                  class="css-1gxkf0o-Input"
                   data-testid="input-area"
                   disabled=""
                   maxlength="40"

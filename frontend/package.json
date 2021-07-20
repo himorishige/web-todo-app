@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --verbose --silent --coverage",
+    "test": "react-scripts test --env=jsdom --verbose --silent --coverage --watchAll",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
@@ -81,5 +81,15 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/components/**/*.tsx",
+      "src/features/**/*.{ts,tsx}",
+      "src/hooks/**/*.{ts,tsx}",
+      "!src/**/*.stories.tsx",
+      "!src/components/routers/Router/*.tsx",
+      "!src/components/templates/Layout/*.tsx"
+    ]
   }
 }
