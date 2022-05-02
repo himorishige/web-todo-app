@@ -12,7 +12,6 @@ provider:
   runtime: nodejs14.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'ap-northeast-1'}
-  lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
     apiKeys:
@@ -99,5 +98,4 @@ custom:
   optimize:
     external: ['swagger-ui-dist']
 
-variablesResolutionMode: 20210326
 configValidationMode: warn
