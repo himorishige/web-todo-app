@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, Input, TextArea, TrashIcon } from 'src/components/atoms';
@@ -17,26 +17,20 @@ import { useToast } from 'src/hooks/useToast';
 import { format } from 'date-fns';
 import { useCallback, useEffect } from 'react';
 
-type Props = {
-  match: {
-    params: {
-      id: string;
-    };
-  };
-};
-
 type Inputs = {
   taskName: string;
   taskMemo: string;
 };
 
-const DetailPage: React.VFC<Props> = (props) => {
-  const taskId = props.match?.params?.id || '404';
+const DetailPage: React.FC = () => {
+  const params = useParams();
+  console.log(params);
+  const taskId = params.id || '404';
   const status = useAppSelector(selectStatus);
   const task = useAppSelector((state) => selectTasks.selectById(state, taskId));
   const dispatch = useAppDispatch();
   const { showToast } = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<Inputs>();
 
@@ -69,14 +63,14 @@ const DetailPage: React.VFC<Props> = (props) => {
 
       if (removeTask.fulfilled.match(result)) {
         showToast('SUCCESS', 'タスクを削除しました');
-        history.push('/');
+        navigate('/');
       }
 
       if (removeTask.rejected.match(result)) {
         showToast('FAIL', 'タスクの削除に失敗しました');
       }
     }
-  }, [dispatch, history, showToast, taskId]);
+  }, [dispatch, navigate, showToast, taskId]);
 
   // 直接詳細ページに訪れた場合、リロードした場合の処理
   useEffect(() => {
@@ -117,15 +111,23 @@ const DetailPage: React.VFC<Props> = (props) => {
               />
             </div>
             <div css={timeWrapper}>
-              <div>登録：{format(new Date(task.createdAt), 'yyyy/MM/dd HH:mm')}</div>
-              <div>更新：{format(new Date(task.updatedAt), 'yyyy/MM/dd HH:mm')}</div>
+              <div>
+                登録：{format(new Date(task.createdAt), 'yyyy/MM/dd HH:mm')}
+              </div>
+              <div>
+                更新：{format(new Date(task.updatedAt), 'yyyy/MM/dd HH:mm')}
+              </div>
             </div>
             <div css={controlWrapper}>
               <div onClick={deleteHandler} data-testid="tasks-delete">
                 <TrashIcon />
               </div>
               <div>
-                <Button primary label="タスクを更新" disabled={status === 'loading'} />
+                <Button
+                  primary
+                  label="タスクを更新"
+                  disabled={status === 'loading'}
+                />
               </div>
             </div>
           </form>

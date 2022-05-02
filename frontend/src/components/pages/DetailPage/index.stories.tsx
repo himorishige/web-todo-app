@@ -34,17 +34,12 @@ export default {
   component: DetailPage,
 } as ComponentMeta<typeof DetailPage>;
 
-const Template: ComponentStory<typeof DetailPage> = (args) => <DetailPage {...args} />;
+const Template: ComponentStory<typeof DetailPage> = (args) => (
+  <DetailPage {...args} />
+);
 
 export const Default = Template.bind({});
 Default.storyName = 'DetailPage';
-Default.args = {
-  match: {
-    params: {
-      id: '5672a87d-5129-4987-a579-fde08a8c5d41',
-    },
-  },
-};
 Default.parameters = {
   msw: [
     rest.get(API_URL, (req, res, ctx) => {
@@ -55,23 +50,9 @@ Default.parameters = {
 
 export const NoData = Template.bind({});
 NoData.storyName = 'No Data';
-NoData.args = {
-  match: {
-    params: {
-      id: '1',
-    },
-  },
-};
 
 export const NetWorkError = Template.bind({});
 NetWorkError.storyName = 'NetWorkError';
-NetWorkError.args = {
-  match: {
-    params: {
-      id: '5672a87d-5129-4987-a579-fde08a8c5d41',
-    },
-  },
-};
 NetWorkError.parameters = {
   msw: [
     rest.get(API_URL, (req, res, ctx) => {

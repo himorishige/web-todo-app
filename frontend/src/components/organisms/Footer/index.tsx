@@ -5,7 +5,7 @@ import { useToast } from 'src/hooks/useToast';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/app/hooks';
 import { createTask, selectStatus } from 'src/features/tasks/tasksSlice';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { memo } from 'react';
 import { useCallback } from 'react';
 
@@ -20,7 +20,7 @@ const Footer: React.VFC<Props> = memo(() => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   const { showToast } = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const { register, handleSubmit, watch, reset } = useForm<Inputs>();
@@ -41,7 +41,7 @@ const Footer: React.VFC<Props> = memo(() => {
         showToast('SUCCESS', 'タスクを登録しました');
         reset();
         if (location.pathname !== '/') {
-          history.push('/');
+          navigate('/');
         }
       }
       if (createTask.rejected.match(result)) {
@@ -49,7 +49,7 @@ const Footer: React.VFC<Props> = memo(() => {
         showToast('FAIL', `タスクの登録に失敗しました ${message}`);
       }
     },
-    [dispatch, history, location.pathname, reset, showToast],
+    [dispatch, navigate, location.pathname, reset, showToast],
   );
 
   return (
@@ -66,7 +66,11 @@ const Footer: React.VFC<Props> = memo(() => {
             />
           </div>
           <div css={buttonWrapper}>
-            <Button primary label="登録" disabled={!watch('taskName') || status === 'loading'} />
+            <Button
+              primary
+              label="登録"
+              disabled={!watch('taskName') || status === 'loading'}
+            />
           </div>
         </div>
       </div>
